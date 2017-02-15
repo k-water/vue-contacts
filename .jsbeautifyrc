@@ -1,0 +1,12 @@
+{
+  "eol": "\n",
+  "e4x": true,
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": false,
+  "js": {
+    "end_with_newline": true,
+    "space_in_paren": false
+  },
+  "html": {
+    "extra_liners": []
+  }
+}
