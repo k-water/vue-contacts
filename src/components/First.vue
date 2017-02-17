@@ -3,7 +3,7 @@
     <el-row>
       <el-col :span="4">
         <div class="grid-content bg-purple-light">
-          <img :src=img alt="">
+          <span class="left-h">简易通讯录</span>
         </div>
       </el-col>
       <el-col :span="24">
@@ -42,6 +42,7 @@
 <style lang="scss">
   body {
     font: normal 16px Roboto,arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
   img {
     max-width: 100%;
@@ -90,6 +91,14 @@
     padding: 12px 20px;
     img {
       height: 36px;
+    }
+    .left-h {
+      line-height: 36px;
+      white-space: nowrap;
+      font-family: Roboto,RobotoDraft,Arial,sans-serif;
+      z-index: 986;
+      font-size: 20px;
+      padding-left: 20px
     }
   }
   
