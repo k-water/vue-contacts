@@ -214,6 +214,11 @@
       handleDelete(index, row) {
         if (confirm('您确定删除此联系人吗？')) {
           this.contacts.splice(index, 1);
+          this.$http.post('http://localhost:8080/Test/delPerson', row).then(response => {
+            console.log(response.status)
+          }, error => {
+            console.log(error)
+          })
         }
       },
 
