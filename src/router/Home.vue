@@ -88,9 +88,9 @@
           </el-input>
         </el-form-item>
         <el-form-item label="生日" prop="birthday" required>
-          <el-date-picker type="date" format="yyyy-MM-dd" placeholder="选择日期" v-model="form.birthday"
+          <el-input type="date" format="yyyy-MM-dd" placeholder="选择日期" v-model="form.birthday"
           style="width: 70%;">
-          </el-date-picker>
+          </el-input>
         </el-form-item>
         <el-form-item label="个人主页" prop="site">
           <el-input v-model="form.site" autocomplete="off">
