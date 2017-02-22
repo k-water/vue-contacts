@@ -9,10 +9,10 @@ import VueResource from 'vue-resource'
 import Home from './router/Home'
 import Group from './router/group'
 import GroupCompany from './router/group-1'
-
 Vue.use(Element)
 Vue.use(VueRouter)
 Vue.use(VueResource)
+Vue.http.options.emulateJSON = true;
 const routes = [
   { path: '/', component: Home },
   { path: '/groupHome', component: Group },

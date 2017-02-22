@@ -99,7 +99,7 @@
         <el-form-item>
         </el-form-item>
         <el-form-item label="分组" prop="group" required>
-          <el-select v-model="form.group" placeholder="请选择分组" style="width: 100%">
+          <el-select v-model="form.battery" placeholder="请选择分组" style="width: 100%">
             <el-option label="家" value="家">
             </el-option>
             <el-option label="公司" value="公司">
@@ -129,6 +129,7 @@
   </div>
 </template>
 <script>
+
   export default {
     name: 'home',
     data() {
@@ -140,6 +141,9 @@
         sure: 'true',
         currentForm: {},
         currentIndex: '',
+        http: {
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        },
         filtersKey: '',
         form: {
           name: '',
@@ -149,7 +153,7 @@
           birthday: '',
           address: '',
           site: '',
-          group: ''
+          battery: ''
         },
         rules: {
           email: [
@@ -197,6 +201,12 @@
         this.currentForm = Object.assign({}, this.currentForm)
         this.$nextTick(() => {
           this.contacts.push(this.currentForm)
+          // console.log(this.currentForm.battery)
+        })
+        this.$http.post('http://localhost:8080/Test/servletSql', this.currentForm).then(response => {
+          console.log(response.status)
+        }, error => {
+          console.log(error)
         })
       },
 
