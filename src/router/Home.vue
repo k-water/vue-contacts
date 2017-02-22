@@ -2,7 +2,7 @@
   <div id="home">
     <el-col :span="15" class="searchPos">
       <div class="grid-content bg-purple-light">
-        <el-input placeholder="请输入你要寻找的内容..." v-model="filtersKey" :keyup.enter="searchWay">
+        <el-input placeholder="请输入你要寻找的内容..." v-model="filtersKey" @keyup.enter="searchWay">
           <el-button slot="append" class="btn" icon="search" @click="searchWay">
           </el-button>
         </el-input>
@@ -173,8 +173,9 @@
     methods: {
       // 数据加载初始化
       init() {
-        this.$http.get('../../static/data/info.json', { credentials: true }).then((res) => {
-          this.contacts = res.body.list
+        this.$http.get('http://localhost:8080/Test/servletSql').then((res) => {
+          let person = res.body
+          this.contacts = JSON.parse(person)
         }, error => {
           console.log(error)
         })

@@ -53,8 +53,8 @@
     },
     methods: {
       init() {
-        this.$http.get('../../static/data/info.json', { credentials: true }).then((res) => {
-          let tempData = res.body.list
+        this.$http.get('http://localhost:8080/Test/servletSql').then((res) => {
+          let tempData = JSON.parse(res.body)
           for(let i = 0; i < tempData.length; i++) {
             for(let value in tempData[i]) {
               if(tempData[i][value] === '家') {
