@@ -56,6 +56,12 @@ public class sqlSearch {
 	public void setGroup(String group) {
 		this.group = group;
 	}
+	public String getSite() {
+		return site;
+	}
+	public void setSite(String site) {
+		this.site = site;
+	}
 	public int getZip() {
 		return zip;
 	}
@@ -71,5 +77,6 @@ public class sqlSearch {
 	private String phoneNumber;
 	private String email;
 	private String group;
+	private String site;
 	private int zip;
 }
