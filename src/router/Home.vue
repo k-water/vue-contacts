@@ -180,6 +180,7 @@
         this.$http.get('http://localhost:8080/Test/servletSql').then((res) => {
           let person = res.body
           this.contacts = JSON.parse(person)
+          // console.log(this.contacts)
         }, error => {
           console.log(error)
         })
@@ -237,18 +238,30 @@
             this.$set(this.contacts[ k ], 'index', k)
           }
         }
+        let tmpContact = {}
         for (let i = 0; i < this.contacts.length; i++) {
           // 根据主键查找要修改的数据，然后将this.form数据更新到this.contacts[i]
           if (this.contacts[ i ][ 'index' ] === this.currentIndex) {
+            
             for (let j in this.form) {
               this.contacts[ i ][ j ] = this.form[ j ]
             }
+            tmpContact = Object.assign({}, this.contacts[i])
             break;
           }
         }
+        // console.log(tmpContact)
+        // 发送数据update sql语句
+        this.$http.post('http://localhost:8080/Test/updatePerson', tmpContact).then(response => {
+          console.log(response.status)
+        }, error => {
+          console.log(error)
+        })
+        
         // 关闭dialog
         this.dialogVisible = false
         this.form = {}
+        
       },
 
       // 对象深拷贝
