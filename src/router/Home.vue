@@ -141,9 +141,6 @@
         sure: 'true',
         currentForm: {},
         currentIndex: '',
-        http: {
-          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        },
         filtersKey: '',
         form: {
           name: '',
@@ -291,25 +288,30 @@
       filterTag(value, row) {
         return row.group === value;
       },
-      // 待定...
+      // 模糊查询
       searchWay() {
         if(this.filtersKey === '') {
           confirm('您输入的内容为空...')
         } else {
-          let flag = false
-          for (let i = 0; i < this.contacts.length; i++) {
-            for (let value in this.contacts[ i ]) {
-              if (this.contacts[ i ][ value ] === this.filtersKey) {
-                flag = true
-                confirm('该联系人为：' + '\n'
-                        + '姓名：' + this.contacts[i]['name'])
-                continue ;
-              }
+          let flag = 0
+          let isExist = 0
+          let reg = new RegExp(this.filtersKey);
+          for (let i = 0, len = this.contacts.length; i < len; i++) {
+            flag = 0
+            Object.values(this.contacts[i]).forEach(n => {
+               if(reg.test(n)) {
+                 flag ++
+               }
+            })
+            if(flag > 0) {
+              confirm('该联系人为：' + '\n'+ '姓名：' + this.contacts[i]['name'])
+              isExist ++
             }
-          }
-          console.log(flag)
-          if(flag === false) {
-              confirm('不存在此联系人')
+          } // 结束循环
+
+          // 判断是否有查询结果
+          if(isExist === 0) {
+            confirm('您查询的联系人不存在！！请重新查询...')
           }
           this.filtersKey = ''
         }
