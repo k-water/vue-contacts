@@ -188,7 +188,7 @@
     methods: {
       // 数据加载初始化
       init() {
-        this.$http.get('http://localhost:8080/Test/servletSql').then((res) => {
+        this.$http.get('http://localhost:8080/ContactsBe/getPerson').then((res) => {
           let person = res.body
           this.contacts = JSON.parse(person)
         }, error => {
@@ -214,7 +214,7 @@
           this.contacts.push(this.currentForm)
           // console.log(this.currentForm.battery)
         })
-        this.$http.post('http://localhost:8080/Test/servletSql', this.currentForm).then(response => {
+        this.$http.post('http://localhost:8080/ContactsBe/addPerson', this.currentForm).then(response => {
           console.log(response.status)
         }, error => {
           console.log(error)
@@ -225,7 +225,7 @@
       handleDelete(index, row) {
         if (confirm('您确定删除此联系人吗？')) {
           this.contacts.splice(index, 1);
-          this.$http.post('http://localhost:8080/Test/delPerson', row).then(response => {
+          this.$http.post('http://localhost:8080/ContactsBe/delPerson', row).then(response => {
             console.log(response.status)
           }, error => {
             console.log(error)
@@ -262,7 +262,7 @@
         }
         // console.log(tmpContact)
         // 发送数据update sql语句
-        this.$http.post('http://localhost:8080/Test/updatePerson', tmpContact).then(response => {
+        this.$http.post('http://localhost:8080/ContactsBe/updatePerson', tmpContact).then(response => {
           console.log(response.status)
         }, error => {
           console.log(error)
