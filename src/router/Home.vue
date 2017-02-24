@@ -16,8 +16,21 @@
         </el-button>
       </div>
     </el-col>
+
+    <!--侧栏图片-->
+    <el-col :span="4" v-for="(o, index) in 1" :offset="index > 0 ? 1 : 0">
+      <el-card :body-style="{ padding: '0px' }">
+        <img src="https://oc1gyfe6q.qnssl.com/XqjPCz.jpg?raw=true" class="image">
+        <div style="padding: 14px;">
+          <span>联系人</span>
+          <div class="bottom clearfix">
+            <time class="time">{{ currentDate }}</time>
+          </div>
+        </div>
+      </el-card>
+    </el-col>
     <!--Table展示数据-->
-    <el-col :span="20">
+    <el-col :span="18" :offset="1">
       <el-table :data="contacts" @filter-change="[{text: 'name',value: 'water'}]">
         <el-table-column type="expand">
           <template scope="props">
@@ -142,6 +155,7 @@
         currentForm: {},
         currentIndex: '',
         filtersKey: '',
+        currentDate: new Date(),
         form: {
           name: '',
           email: '',
@@ -177,7 +191,6 @@
         this.$http.get('http://localhost:8080/Test/servletSql').then((res) => {
           let person = res.body
           this.contacts = JSON.parse(person)
-          // console.log(this.contacts)
         }, error => {
           console.log(error)
         })
@@ -332,5 +345,34 @@
     position: absolute;
     top: 0;
     right: 20.833333%
+  }
+   .time {
+    font-size: 13px;
+    color: #999;
+  }
+  
+  .bottom {
+    margin-top: 13px;
+    line-height: 12px;
+  }
+
+  .button {
+    padding: 0;
+    float: right;
+  }
+
+  .image {
+    width: 100%;
+    display: block;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+      display: table;
+      content: "";
+  }
+  
+  .clearfix:after {
+      clear: both
   }
 </style>

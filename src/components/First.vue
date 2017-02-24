@@ -6,6 +6,7 @@
           <span class="left-h">简易通讯录</span>
         </div>
       </el-col>
+      <!--
       <el-col :span="24">
         <div class="grid-content-2 bg-blue">
           <span>
@@ -13,6 +14,7 @@
           </span>
         </div>
       </el-col>
+      -->
     </el-row>
   </div>
 </template>

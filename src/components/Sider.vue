@@ -1,36 +1,22 @@
 <template>
   <div id="sider">
-    <el-col :span="4" class="sider-left">
-      <el-menu router default-active="1">
+      <el-menu router default-active="1" class="el-menu-demo" mode="horizontal" theme="dark">
         <el-menu-item index="1" :route="{path: '/'}">
           <i class="el-icon-message">
           </i>
           Contacts
         </el-menu-item>
-        <el-submenu index="2">
-          <template slot="title">
-            <i class="el-icon-menu">
-            </i>
-            群组
-          </template>
-          <el-menu-item-group title="">
-            <el-menu-item index="2-1" v-for="(item,index) in items" :route="{path: item.path}">
-              {{item.name}}
-            </el-menu-item>
-          </el-menu-item-group>
-          <li class="add-group">
-            <i class="el-icon-plus"></i>
-            <el-button type="text" @click="addGroup">创建分组</el-button>
-          </li>
-        </el-submenu>
+        <el-menu-item index="2" :route="{path: '/groupHome'}">
+          <i class="el-icon-menu">
+          </i>
+          群組
+        </el-menu-item>
         <el-menu-item index="3">
           <i class="el-icon-setting">
           </i>
           更多
         </el-menu-item>
       </el-menu>
-    </el-col>
-    
   </div>
 </template>
 <script>
@@ -39,13 +25,23 @@
     data() {
       return {
         currentIndex: 0,
-        items: [
-          {name: '家', path: 'groupHome'},
-          {name: '公司', path: 'groupCompany'}
-        ]
+        items: []
       }
     },
+    mounted () {
+      this.$nextTick(() => {
+        this.init()
+      })
+    },
     methods: {
+      init() {
+        this.$http.get('http://localhost:8080/Test/getGroup').then(response => {
+          this.items = JSON.parse(response.body)
+        }, error => {
+          return console.log(error)
+        })
+      },
+      
       addGroup() {
         this.$prompt('请输入分组名称', '提示', {
           confirmButtonText: '确定',
@@ -55,7 +51,7 @@
             type: 'success',
             message: '你添加的分组是: ' + value
           });
-          this.items.push({name: value, path: value})
+          this.items.push({name: value})
         }).catch(() => {
           this.$message({
             type: 'info',
