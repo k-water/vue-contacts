@@ -15,6 +15,7 @@
     "element-ui": "^1.0.0-rc.5"
   },
   "devDependencies": {
+    "N3-components": "^2.0.4",
     "autoprefixer": "^6.4.0",
     "babel-core": "^6.0.0",
     "babel-loader": "^6.0.0",

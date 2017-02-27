@@ -1,5 +1,5 @@
 <template>
-  <div id="sider">
+  <div id="navigate">
       <el-menu router default-active="1" class="el-menu-demo" mode="horizontal" theme="dark">
         <el-menu-item index="1" :route="{path: '/'}">
           <i class="el-icon-message">
@@ -11,7 +11,7 @@
           </i>
           群組
         </el-menu-item>
-        <el-menu-item index="3">
+        <el-menu-item index="3" :route="{path: '/more'}">
           <i class="el-icon-setting">
           </i>
           更多
@@ -21,7 +21,7 @@
 </template>
 <script>
   export default {
-    name: 'sider',
+    name: 'navigate',
     data() {
       return {}
     },

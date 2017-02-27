@@ -8,7 +8,9 @@ import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 import Home from './router/Home'
 import Group from './router/group'
-import GroupCompany from './router/group-1'
+import More from './router/more'
+
+
 Vue.use(Element)
 Vue.use(VueRouter)
 Vue.use(VueResource)
@@ -16,7 +18,7 @@ Vue.http.options.emulateJSON = true;
 const routes = [
   { path: '/', component: Home },
   { path: '/groupHome', component: Group },
-  { path: '/groupCompany', component: GroupCompany }
+  { path: '/more', component: More }
 ]
 
 const router = new VueRouter({ //创建路由实例

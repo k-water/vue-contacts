@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <First></First>
-    <Sider></Sider>
+    <Navigate></Navigate>
     <!--路由出口-->
     <router-view
         keep-alive
@@ -12,7 +12,7 @@
 
 <script>
   import First from './components/First'
-  import Sider from './components/Sider'
+  import Navigate from './components/Navigate'
   export default {
     data() {
       return {
@@ -21,7 +21,7 @@
     },
     components: {
       First,
-      Sider
+      Navigate
     }
   }
 </script>
