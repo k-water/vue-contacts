@@ -1,6 +1,6 @@
 package servletAll.contactPerson;
 
-import java.io.IOException;
+import java.io.*;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -102,7 +103,8 @@ public class getPerson extends HttpServlet {
 			}
 			String jsonString = JSON.toJSONString(list);
 			out.println(jsonString);
-
+			
+			
 			rs.close();
 			stmt.close();
 			conn.close();
@@ -127,4 +129,12 @@ public class getPerson extends HttpServlet {
 			}
 		}
 	}
+
+	@Override
+	public void init() throws ServletException {
+		// TODO Auto-generated method stub
+		String path = getServletContext().getRealPath("/");
+		System.out.println(path);
+	}
+
 }
