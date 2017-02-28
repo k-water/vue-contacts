@@ -7,8 +7,8 @@ import Element from 'element-ui'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 import Home from './router/Home'
-import Group from './router/group'
-import More from './router/more'
+import Group from './router/Group'
+import More from './router/More'
 
 
 Vue.use(Element)

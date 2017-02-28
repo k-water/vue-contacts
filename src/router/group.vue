@@ -61,7 +61,7 @@
     methods: {
       init(tmpGroup = '家') {
         this.groupData = []
-        this.$http.get('http://localhost:8080/ContactsBe/getPerson').then((res) => {
+        this.$http.get('http://localhost:8081/ContactsBe/getPerson').then((res) => {
           let tempData = JSON.parse(res.body)
           for (let i = 0; i < tempData.length; i++) {
             if (tempData[i]['group'] === tmpGroup) {
@@ -73,7 +73,7 @@
         })
       },
       getGroup() {
-        this.$http.get('http://localhost:8080/ContactsBe/getGroup').then(response => {
+        this.$http.get('http://localhost:8081/ContactsBe/getGroup').then(response => {
           this.getItems = JSON.parse(response.body)
           // debug
           // console.log(this.getItems[0]['name'])
@@ -91,7 +91,7 @@
             message: '你添加的分组是: ' + value
           });
           this.getItems.push({name: value})
-          this.$http.post('http://localhost:8080/ContactsBe/addGroup', {name: value}).then(response => {
+          this.$http.post('http://localhost:8081/ContactsBe/addGroup', {name: value}).then(response => {
             console.log(response.status)
           }, error => {
             return console.log(error)
@@ -108,7 +108,7 @@
           // console.log(item)
           this.getItems.splice(index, 1)
         }
-        this.$http.post('http://localhost:8080/ContactsBe/delGroup', {name: item}).then(response => {
+        this.$http.post('http://localhost:8081/ContactsBe/delGroup', {name: item}).then(response => {
           console.log(response.status)
         }, error => {
           return console.log(error)
