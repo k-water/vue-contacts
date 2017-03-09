@@ -35,22 +35,19 @@
         <el-table-column type="expand">
           <template scope="props">
             <p>
-              省: {{ props.row.province }}
-            </p>
-            <p>
-              市: {{ props.row.city }}
-            </p>
-            <p>
-              住址: {{ props.row.detailAddress }}
-            </p>
-            <p>
-              邮编: {{ props.row.zip }}
+              家庭电话: {{ props.row.homeNumber }}
             </p>
             <p>
               生日：{{ props.row.birthday }}
             </p>
             <p>
               分组：{{ props.row.group }}
+            </p>
+            <p>
+              地址：{{ props.row.address }}
+            </p>
+            <p>
+              个人主页：<a :href="props.row.site" target="_blank"> {{ props.row.site }} </a>
             </p>
           </template>
         </el-table-column>
@@ -212,8 +209,9 @@
         this.currentForm = Object.assign({}, this.currentForm)
         this.$nextTick(() => {
           this.contacts.push(this.currentForm)
-          // console.log(this.currentForm.battery)
         })
+        this.currentForm = Object.assign({},this.currentForm, {id: this.contacts.length + 1})
+        // console.log(this.currentForm)
         this.$http.post('http://localhost:8081/ContactsBe/addPerson', this.currentForm).then(response => {
           console.log(response.status)
         }, error => {
