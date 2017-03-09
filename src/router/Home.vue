@@ -31,7 +31,7 @@
     </el-col>
     <!--Table展示数据-->
     <el-col :span="18" :offset="1">
-      <el-table :data="contacts" @filter-change="[{text: 'name',value: 'water'}]">
+      <el-table :data="contacts">
         <el-table-column type="expand">
           <template scope="props">
             <p>
@@ -41,7 +41,7 @@
               生日：{{ props.row.birthday }}
             </p>
             <p>
-              分组：{{ props.row.group }}
+              分组：{{ props.row.battery }}
             </p>
             <p>
               地址：{{ props.row.address }}
@@ -57,11 +57,11 @@
         </el-table-column>
         <el-table-column label="电话" prop="phoneNumber">
         </el-table-column>
-        <el-table-column prop="group" label="分组" width="100" :filters="[{ text: '家', value: '家' }, { text: '公司', value: '公司' }]"
+        <el-table-column prop="battery" label="分组" width="100" :filters="groups"
         :filter-method="filterTag">
           <template scope="scope">
-            <el-tag :type="scope.row.group === '家' ? 'primary' : 'success'" close-transition>
-              {{scope.row.group}}
+            <el-tag :type="scope.row.battery === '家' ? 'primary' : 'success'" close-transition>
+              {{scope.row.battery}}
             </el-tag>
           </template>
         </el-table-column>
@@ -108,13 +108,9 @@
         </el-form-item>
         <el-form-item>
         </el-form-item>
-        <el-form-item label="分组" prop="group" required>
-          <el-select v-model="form.battery" placeholder="请选择分组" style="width: 100%">
-            <el-option label="家" value="家">
-            </el-option>
-            <el-option label="公司" value="公司">
-            </el-option>
-          </el-select>
+        <el-form-item label="分组" prop="battery" required>
+          <el-input v-model="form.battery" placeholder="请填写分组">
+          </el-input>
         </el-form-item>
         <el-form-item label="地址" prop="address" required>
           <el-input type="textarea" v-model="form.address" style="width: 70%;" auto-complete="off">
@@ -145,6 +141,7 @@
     data() {
       return {
         contacts: [],
+        groups: [],
         dialogVisible: false,
         dialogFormVisible: false,
         labelPosition: 'left',
@@ -180,6 +177,7 @@
     mounted() {
       this.$nextTick(() => {
         this.init()
+        this.getGroup()
       })
     },
     methods: {
@@ -192,7 +190,13 @@
           console.log(error)
         })
       },
-
+      getGroup() {
+        this.$http.get('http://localhost:8081/ContactsBe/getGroup').then(response => {
+          this.groups = JSON.parse(response.body)
+        }, error => {
+          return console.log(error)
+        })
+      },
       // 点击Add打开Dialog 并清空上一次的数据
       openDialog() {
         this.dialogVisible = true
@@ -211,14 +215,30 @@
           this.contacts.push(this.currentForm)
         })
         this.currentForm = Object.assign({},this.currentForm, {id: this.contacts.length + 1})
-        // console.log(this.currentForm)
+        // console.log(this.currentForm['battery'])
+        // 增加联系人
         this.$http.post('http://localhost:8081/ContactsBe/addPerson', this.currentForm).then(response => {
           console.log(response.status)
         }, error => {
           console.log(error)
         })
+        // 增加分组 过滤相同的分组
+        for(let i = 0, len = this.groups.length; i<len;i++) {
+          let tmp = Object.values(this.groups[i])
+          if(this.currentForm['battery'] === tmp[0]) {
+            return ;
+          } else {
+            this.addGroup()
+          }
+        }
       },
-
+      addGroup() {
+        this.$http.post('http://localhost:8081/ContactsBe/addGroup', {value: this.currentForm['battery'],text: this.currentForm['battery']}).then(response => {
+          console.log(response.status)
+        }, error => {
+          return console.log(error)
+        })
+      },
       // 删除一行数据
       handleDelete(index, row) {
         if (confirm('您确定删除此联系人吗？')) {
@@ -268,8 +288,7 @@
         
         // 关闭dialog
         this.dialogVisible = false
-        this.form = {}
-        
+        this.form = {}  
       },
 
       // 对象深拷贝
@@ -297,7 +316,7 @@
 
       // 分组过滤method
       filterTag(value, row) {
-        return row.group === value;
+        return row.battery === value;
       },
       // 模糊查询
       searchWay() {

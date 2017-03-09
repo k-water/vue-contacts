@@ -2,9 +2,9 @@
   <div id="group">
     <el-col :span="4">
       <ul class="ul-menu">
-        <li class="ul-menu-item" v-for="(item, index) in getItems" @click="init(item.name)">
-          {{item.name}}
-          <i class="el-icon-delete ul-menu-item-delete" @click="delGroup(index,item.name)">
+        <li class="ul-menu-item" v-for="(item, index) in getItems" @click="init(item.value)">
+          {{item.value}}
+          <i class="el-icon-delete ul-menu-item-delete" @click="delGroup(index,item.value)">
           </i>
         </li>
         <li class="ul-menu-item" style="padding: 0 5px" @click="addGroup">
@@ -24,10 +24,10 @@
         </el-table-column>
         <el-table-column prop="address" label="地址">
         </el-table-column>
-        <el-table-column prop="group" label="分组" width="150">
+        <el-table-column prop="battery" label="分组" width="150">
           <template scope="scope">
             <el-tag type="primary">
-              {{scope.row.group}}
+              {{scope.row.battery}}
             </el-tag>
           </template>
         </el-table-column>
@@ -63,8 +63,9 @@
         this.groupData = []
         this.$http.get('http://localhost:8081/ContactsBe/getPerson').then((res) => {
           let tempData = JSON.parse(res.body)
+          // console.log(tempData)
           for (let i = 0; i < tempData.length; i++) {
-            if (tempData[i]['group'] === tmpGroup) {
+            if (tempData[i]['battery'] === tmpGroup) {
               this.groupData.push(tempData[i])
               // debug
               // console.log(tempData[i])
@@ -90,8 +91,8 @@
             type: 'success',
             message: '你添加的分组是: ' + value
           });
-          this.getItems.push({name: value})
-          this.$http.post('http://localhost:8081/ContactsBe/addGroup', {name: value}).then(response => {
+          this.getItems.push({value: value})
+          this.$http.post('http://localhost:8081/ContactsBe/addGroup', {text: value,value: value}).then(response => {
             console.log(response.status)
           }, error => {
             return console.log(error)
@@ -108,7 +109,7 @@
           // console.log(item)
           this.getItems.splice(index, 1)
         }
-        this.$http.post('http://localhost:8081/ContactsBe/delGroup', {name: item}).then(response => {
+        this.$http.post('http://localhost:8081/ContactsBe/delGroup', {value: item}).then(response => {
           console.log(response.status)
         }, error => {
           return console.log(error)
