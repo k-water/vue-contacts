@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -68,7 +67,7 @@ public class getPerson extends HttpServlet {
 
 			stmt = ((Connection) conn).createStatement();
 			String sql;
-			sql = "SELECT birthday,id,battery,site,name,province,city,address,detailAddress,phoneNumber,email,zip FROM personList";
+			sql = "SELECT * FROM `personlist`";
 			ResultSet rs = stmt.executeQuery(sql);
 			ArrayList<Object> list = new ArrayList<>();
 
@@ -76,35 +75,28 @@ public class getPerson extends HttpServlet {
 
 				String birthday = rs.getString("birthday");
 				String name = rs.getString("name");
-				String province = rs.getString("province");
-				String city = rs.getString("city");
 				String address = rs.getString("address");
-				String detailAddress = rs.getString("detailAddress");
 				String phoneNumber = rs.getString("phoneNumber");
 				String email = rs.getString("email");
-				String group = rs.getString("battery");
+				String battery = rs.getString("battery");
 				String site = rs.getString("site");
-				int zip = rs.getInt("zip");
-				int id = rs.getInt("id");
+				String homeNumber = rs.getString("homeNumber");
+				String id = rs.getString("id");
 				Person person = new Person();
 				person.setBirthday(birthday);
 				person.setName(name);
-				person.setProvince(province);
-				person.setCity(city);
 				person.setAddress(address);
-				person.setDetailAddress(detailAddress);
 				person.setPhoneNumber(phoneNumber);
 				person.setEmail(email);
-				person.setZip(zip);
-				person.setGroup(group);
+				person.setBattery(battery);
 				person.setSite(site);
 				person.setId(id);
+				person.setHomeNumber(homeNumber);
 				list.add(person);
 			}
 			String jsonString = JSON.toJSONString(list);
 			out.println(jsonString);
-			
-			
+
 			rs.close();
 			stmt.close();
 			conn.close();
@@ -133,8 +125,8 @@ public class getPerson extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		// TODO Auto-generated method stub
-		String path = getServletContext().getRealPath("/");
-		System.out.println(path);
+		// String path = getServletContext().getRealPath("/");
+		// System.out.println(path);
 	}
 
 }

@@ -54,9 +54,9 @@ public class delGroup extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 		response.setCharacterEncoding("UTF-8");
 
-		String name = request.getParameter("name");
+		String value = request.getParameter("value");
 		// System.out.println(name);
-		String sql = "delete from grouplist where name='" + name + "'";
+		String sql = "delete from grouplist where value='" + value + "'";
 		sql_data db = new sql_data();
 		db.executeDelete(sql);
 	}

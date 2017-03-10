@@ -4,28 +4,28 @@
       "name": "aaaaa",
       "email": "13602803974@163.com",
       "birthday": "1998-01-16",
-      "address": "骞夸笢鐪佸箍宸炲競澶╂渤鍖哄崕鍗楀啘涓氬ぇ瀛�",
-      "detailAddress": "澶╂渤鍖哄崕鍗楀啘涓氬ぇ瀛�",
+      "address": "广东省广州市天河区华南农业大学",
+      "detailAddress": "天河区华南农业大学",
       "phoneNumber": "15113110298",
-      "city": "姹曞ご",
-      "province": "骞夸笢",
-      "battery": "瀹�",
+      "city": "广州",
+      "province": "广东",
+      "battery": "公司",
       "zip": 515162,
-      "site": "http:\/\/waterlin.cn"
+      "site": "http://waterlin.cn"
     },
     {
       "id": 4,
       "name": "bbbb",
       "email": "13333330298@163.com",
       "birthday": "1998-02-01",
-      "address": "骞夸笢鐪佸箍宸炲競澶╂渤鍖哄崕鍗楀啘涓氬ぇ瀛�",
-      "detailAddress": "澶╂渤鍖哄崕鍗楀啘涓氬ぇ瀛�",
-      "phoneNumber": "13333330298",
-      "city": "骞垮窞",
-      "province": "骞夸笢",
-      "battery": "鍏徃",
-      "zip": 510642,
-      "site": "http:\/\/waterlin.cn"
+      "address": "广东省广州市天河区华南农业大学",
+      "detailAddress": "天河区华南农业大学",
+      "phoneNumber": "15113110298",
+      "city": "广州",
+      "province": "广东",
+      "battery": "家",
+      "zip": 515162,
+      "site": "http://waterlin.cn"
     }
   ]
 }

@@ -37,7 +37,7 @@ public class SmartUploadServlet extends HttpServlet {
 		List<Person> list = JSON.parseArray(tmp, Person.class);
 		for (Person person : list) {
 			String name = person.getName();
-			int id = person.getId();
+			String id = person.getId();
 			String birthday = person.getBirthday();
 			String email = person.getEmail();
 			String phoneNumber = person.getPhoneNumber();

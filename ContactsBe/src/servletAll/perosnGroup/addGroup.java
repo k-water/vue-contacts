@@ -1,6 +1,8 @@
 package servletAll.perosnGroup;
 
-import java.io.IOException;
+import java.sql.*;
+import java.io.*;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -52,11 +54,43 @@ public class addGroup extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 		response.setCharacterEncoding("UTF-8");
 
-		String name = request.getParameter("name");
-		String sql = "insert into grouplist(name) values('" + name + "')";
+		String text = request.getParameter("text");
+		String value = request.getParameter("value");
+		String searchSql = "SELECT * FROM `grouplist`";
+		String insertSql = "insert into grouplist(text,value) values('" + text + "','" + value + "')";
 
 		sql_data db = new sql_data();
-		db.executeInsert(sql);
+		int flag = judge(searchSql, value);
+		// System.out.println(text);
+		if (text == "" || value == "" || flag == 1) {
+			System.out.println("没有插入数据");
+			return;
+		} else {
+			db.executeInsert(insertSql);
+			System.out.println("插入了新的分组：" + value);
+		}
+
+	}
+
+	// sql查询语句 比较前台返回的数据是否存在相同的
+	public int judge(String sql, String value) {
+		sql_data db = new sql_data();
+		ResultSet rs = db.executeQuery(sql);
+		int flag = 0;
+		try {
+			while (rs.next()) {
+				String valueSql = rs.getString("value");
+				if (value == valueSql) {
+					flag = 1;
+				} else {
+					continue;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return flag;
 	}
 
 }

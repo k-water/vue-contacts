@@ -2,7 +2,7 @@
     <wb-module deploy-name="ContactsBe">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <property name="java-output-path" value="/ContactsBe/build/classes"/>
         <property name="context-root" value="ContactsBe"/>
+        <property name="java-output-path" value="/ContactsBe/build/classes"/>
     </wb-module>
 </project-modules>

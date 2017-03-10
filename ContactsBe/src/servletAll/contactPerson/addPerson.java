@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.mysql.jdbc.PreparedStatement;
 import servletAll.common.*;
 import servletAll.contactPerson.Person;
+
 /**
  * Servlet implementation class addPerson
  */
@@ -63,47 +64,16 @@ public class addPerson extends HttpServlet {
 		String address = request.getParameter("address");
 		String site = request.getParameter("site");
 		String group = request.getParameter("battery");
+		String id = request.getParameter("id");
+		String homeNumber = request.getParameter("homeNumber");
 
-		// System.out.println(birthday);
-		// System.out.println(email);
-		// System.out.println(name);
+		String sql = "insert into personlist(id,name,email,birthday,address,phoneNumber,battery,site,homeNumber) values('"
+				+ id + "','" + name + "','" + email + "','" + birthday + "','" + address + "','" + phoneNumber + "','"
+				+ group + "','" + site + "','" + homeNumber + "')";
 
-		// 存储到mysql中
-		Person person = new Person();
-		person.setName(name);
-		person.setEmail(email);
-		person.setPhoneNumber(phoneNumber);
-		person.setBirthday(birthday);
-		person.setAddress(address);
-		person.setSite(site);
-		person.setGroup(group);
-		insertDate(person);
+		sql_data db = new sql_data();
+		db.executeInsert(sql);
+
 	}
 
-	// 插入sql语句的函数
-	/**
-	 * 
-	 * @param person
-	 */
-	private void insertDate(Person person) {
-		Connection con = null; // 一个连接对象
-		con = (Connection) DB.getcon(con); // 得到一个连接
-		PreparedStatement ps = null; // 用于插入数据
-		// sql语句，向表user里面，插入name和pass的值
-		String sql = "insert into personlist(name,email,phoneNumber,birthday,address,site,battery) values(?,?,?,?,?,?,?)";
-		ps = (PreparedStatement) DB.getpsta(con, sql);
-		try {
-			ps.setString(1, person.getName());
-			ps.setString(2, person.getEmail());
-			ps.setString(3, person.getPhoneNumber());
-			ps.setString(4, person.getBirthday());
-			ps.setString(5, person.getAddress());
-			ps.setString(6, person.getSite());
-			ps.setString(7, person.getGroup());
-			ps.executeUpdate();
-			ps.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
 }

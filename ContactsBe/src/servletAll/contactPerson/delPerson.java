@@ -57,7 +57,7 @@ public class delPerson extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 
 		String name = request.getParameter("name");
-		System.out.println(name);
+		// System.out.println(name);
 		String sql = "delete from personlist where name='" + name + "'";
 		sql_data db = new sql_data();
 		db.executeDelete(sql);

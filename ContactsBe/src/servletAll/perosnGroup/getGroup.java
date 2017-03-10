@@ -69,14 +69,16 @@ public class getGroup extends HttpServlet {
 
 			stmt = ((Connection) conn).createStatement();
 			String sql;
-			sql = "SELECT name FROM grouplist";
+			sql = "SELECT * FROM `grouplist`";
 			ResultSet rs = stmt.executeQuery(sql);
 			ArrayList<Object> list = new ArrayList<>();
 
 			while (rs.next()) {
-				String group = rs.getString("name");
+				String text = rs.getString("text");
+				String value = rs.getString("value");
 				Group grouplist = new Group();
-				grouplist.setName(group);
+				grouplist.setText(text);
+				grouplist.setValue(value);
 				list.add(grouplist);
 			}
 			String jsonString = JSON.toJSONString(list);

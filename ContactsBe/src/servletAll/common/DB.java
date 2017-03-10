@@ -11,7 +11,7 @@ import com.mysql.jdbc.Statement;
 public class DB {
 	public static Connection getcon(java.sql.Connection con) {
 		String dbname = "TEST"; // 你创建的数据库名字
-		String username = "root"; // 登陆数据库的账号，默认为root
+		String username = "root"; // 登陆数据库的账号
 		String password = "root"; // 登陆密码
 		String url = "jdbc:mysql://127.0.0.1:3306/" + dbname + "?user=" + username + "&password=" + password + "";
 
