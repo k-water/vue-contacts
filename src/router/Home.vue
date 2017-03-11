@@ -136,210 +136,180 @@
     </div>
   </template>
   <script>
-      export default {
-      name: 'home',
-      data() {
-        return {
-          contacts: [],
-          groups: [],
-          tempContacts: [],
-          dialogVisible: false,
-          dialogFormVisible: false,
-          labelPosition: 'left',
-          sure: 'true',
-          currentForm: {},
-          currentIndex: '',
-          filtersKey: '',
-          currentDate: new Date(),
-          form: {
-            name: '',
-            email: '',
-            phoneNumber: '',
-            homeNumber: '',
-            birthday: '',
-            address: '',
-            site: '',
-            battery: ''
-          },
-          rules: {
-            email: [
-              { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-              { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur, change' }
-            ],
-            phoneNumber: [
-              { required: true, message: '请填写手机号码', trigger: 'blur' },
-            ],
-            site: [
-              { required: true, message: '请输入一个网址', trigger: 'blur' }
-            ]
-          }
-        }
-      },
-      mounted() {
-        this.$nextTick(() => {
-          this.init()
-          this.getGroup()
-        })
-      },
-      methods: {
-        // 数据加载初始化
-        init() {
-          this.$http.get('http://localhost:8081/ContactsBe/getPerson').then((res) => {
-            let person = res.body
-            this.contacts = JSON.parse(person)
-            this.tempContacts = JSON.parse(person)            
-          }, error => {
-            console.log(error)
-          })
+    import {mapActions,mapGetters} from 'vuex'
+    export default {
+    name: 'home',
+    data() {
+      return {
+        groups: [],
+        tempContacts: [],
+        dialogVisible: false,
+        dialogFormVisible: false,
+        labelPosition: 'left',
+        sure: 'true',
+        currentForm: {},
+        currentIndex: '',
+        filtersKey: '',
+        currentDate: new Date(),
+        form: {
+          name: '',
+          email: '',
+          phoneNumber: '',
+          homeNumber: '',
+          birthday: '',
+          address: '',
+          site: '',
+          battery: ''
         },
-        
-        getGroup() {
-          this.$http.get('http://localhost:8081/ContactsBe/getGroup').then(response => {
-            this.groups = JSON.parse(response.body)
-          }, error => {
-            return console.log(error)
-          })
-        },
-        // 点击Add打开Dialog 并清空上一次的数据
-        openDialog() {
-          this.dialogVisible = true
-          this.sure = true
-          for (let value in this.form) {
-            this.form[value] = ''
-          }
-        },
-
-        //添加新的数据
-        async addContacts() {
-          this.dialogVisible = false
-          this.currentForm = this.form
-          this.currentForm = Object.assign({}, this.currentForm)
-          this.$nextTick(() => {
-            this.contacts.push(this.currentForm)
-          })
-          this.currentForm = Object.assign({}, this.currentForm, { id: this.contacts.length + 1 })
-            // console.log(this.currentForm['battery'])
-            // 增加联系人
-          await this.$http.post('http://localhost:8081/ContactsBe/addPerson', this.currentForm).then(response => {
-              console.log(response.status)
-            }, error => {
-              console.log(error)
-            })
-            // 增加分组
-          await this.addGroup()
-        },
-        addGroup() {
-          let battery = this.currentForm['battery']
-          this.$http.post('http://localhost:8081/ContactsBe/addGroup', { valname: battery, text: battery }).then(response => {
-            console.log(response.status)
-          }, error => {
-            return console.log(error)
-          })
-        },
-        // 删除一行数据
-        handleDelete(index, row) {
-          if (confirm('您确定删除此联系人吗？')) {
-            this.contacts.splice(index, 1);
-            this.$http.post('http://localhost:8081/ContactsBe/delPerson', row).then(response => {
-              console.log(response.status)
-            }, error => {
-              console.log(error)
-            })
-          }
-        },
-
-        //编辑一行数据
-        handleEdit(index, row) {
-          this.sure = false
-          this.dialogVisible = true
-          this.form = this.initItemForUpdate(row)
-          this.currentIndex = index
-        },
-
-        // 修改一行数据
-        changeContact() {
-          for (let k = 0; k < this.contacts.length; k++) {
-            if (typeof this.contacts[k]['index'] === 'undefined') {
-              this.$set(this.contacts[k], 'index', k)
-            }
-          }
-          let tmpContact = {}
-          for (let i = 0; i < this.contacts.length; i++) {
-            // 根据主键查找要修改的数据，然后将this.form数据更新到this.contacts[i]
-            if (this.contacts[i]['index'] === this.currentIndex) {
-
-              for (let j in this.form) {
-                this.contacts[i][j] = this.form[j]
-              }
-              tmpContact = Object.assign({}, this.contacts[i])
-              break;
-            }
-          }
-          // console.log(tmpContact)
-          // 发送数据update sql语句
-          this.$http.post('http://localhost:8081/ContactsBe/updatePerson', tmpContact).then(response => {
-            console.log(response.status)
-          }, error => {
-            console.log(error)
-          })
-
-          // 关闭dialog
-          this.dialogVisible = false
-          this.form = {}
-        },
-
-        // 对象深拷贝
-        // 卧槽 卡了我十天半个月 真是深奥
-        initItemForUpdate(p, c) {
-          c = c || {};
-          for (var i in p) {
-            // 属性i是否为p对象的自有属性
-            if (p.hasOwnProperty(i)) {
-              // 属性i是否为复杂类型
-              if (typeof p[i] === 'object') {
-                // 如果p[i]是数组，则创建一个新数组
-                // 如果p[i]是普通对象，则创建一个新对象
-                c[i] = Array.isArray(p[i]) ? [] : {};
-                // 递归拷贝复杂类型的属性
-                this.initItemForUpdate(p[i], c[i]);
-              } else {
-                // 属性是基础类型时，直接拷贝
-                c[i] = p[i];
-              }
-            }
-          }
-          return c;
-        },
-
-        // 分组过滤method
-        filterTag(value, row) {
-          return row.battery === value;
-        },
-        // 模糊查询
-        fuzzyQuery() {
-
-          if(this.filtersKey === '') {
-            confirm('查询的内容不能为空，请重新输入！！')
-          } else {
-            this.$http.post('http://localhost:8081/ContactsBe/SearchPerson', {key: this.filtersKey}).then(response => {
-              this.contacts = JSON.parse(response.body)
-              let len = this.contacts.length
-              if(len === 0) {
-                return confirm('您查询的联系人不存在...')
-              } else {
-                return confirm('查询到了' + len + '位联系人')
-              }
-            }, err => {
-              return console.log(err)
-            })
-          }
-          this.filtersKey = ''
-          setTimeout(() => {
-            this.contacts = this.tempContacts
-          }, 3000)
+        rules: {
+          email: [
+            { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+            { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur, change' }
+          ],
+          phoneNumber: [
+            { required: true, message: '请填写手机号码', trigger: 'blur' },
+          ],
+          site: [
+            { required: true, message: '请输入一个网址', trigger: 'blur' }
+          ]
         }
       }
+    },
+    computed: {
+      ...mapGetters({
+        contacts: 'allContacts'
+      })
+    },
+    created() {
+      this.$store.dispatch('GET_PERSON')
+      this.getGroup()
+    },
+    methods: {
+
+      getGroup() {
+        this.$http.get('http://localhost:8081/ContactsBe/getGroup').then(response => {
+          this.groups = JSON.parse(response.body)
+        }, error => {
+          return console.log(error)
+        })
+      },
+      // 点击Add打开Dialog 并清空上一次的数据
+      openDialog() {
+        this.dialogVisible = true
+        this.sure = true
+        for (let value in this.form) {
+          this.form[value] = ''
+        }
+      },
+
+      //添加新的数据
+      async addContacts() {
+        this.dialogVisible = false
+        this.currentForm = this.form
+        this.currentForm = Object.assign({}, this.currentForm, { id: this.contacts.length + 1 })
+        this.$nextTick(() => {
+          this.contacts.push(this.currentForm)
+          this.$store.dispatch('ADD_PERSON', this.currentForm)
+        })
+        // 增加分组
+        await this.addGroup()
+      },
+      addGroup() {
+        let battery = this.currentForm['battery']
+        this.$http.post('http://localhost:8081/ContactsBe/addGroup', { valname: battery, text: battery }).then(response => {
+          console.log(response.status)
+        }, error => {
+          return console.log(error)
+        })
+      },
+      // 删除一行数据
+      handleDelete(index, row) {
+        if (confirm('您确定删除此联系人吗？')) {
+          this.$store.dispatch('DEL_PERSON', index)
+          this.$http.post('http://localhost:8081/ContactsBe/delPerson', row).then(response => {
+            console.log('delPerson status is: ' + response.status)
+          }, error => {
+            console.log(error)
+          })
+        }
+      },
+
+      //编辑一行数据
+      handleEdit(index, row) {
+        this.sure = false
+        this.dialogVisible = true
+        this.form = this.initItemForUpdate(row)
+        this.currentIndex = index
+      },
+
+      // 修改一行数据
+      changeContact() {
+        for (let k = 0; k < this.contacts.length; k++) {
+          if (typeof this.contacts[k]['index'] === 'undefined') {
+            this.$set(this.contacts[k], 'index', k)
+          }
+        }
+        let tmpContact = {}
+        for (let i = 0; i < this.contacts.length; i++) {
+          // 根据主键查找要修改的数据，然后将this.form数据更新到this.contacts[i]
+          if (this.contacts[i]['index'] === this.currentIndex) {
+
+            for (let j in this.form) {
+              this.contacts[i][j] = this.form[j]
+            }
+            tmpContact = Object.assign({}, this.contacts[i])
+            break;
+          }
+        }
+        // console.log(tmpContact)
+        // 发送数据update sql语句
+        this.$http.post('http://localhost:8081/ContactsBe/updatePerson', tmpContact).then(response => {
+          console.log('update status is: ' + response.status)
+        }, error => {
+          console.log(error)
+        })
+
+        // 关闭dialog
+        this.dialogVisible = false
+        this.form = {}
+      },
+
+      // 对象深拷贝
+      // 卧槽 卡了我十天半个月 真是深奥
+      initItemForUpdate(p, c) {
+        c = c || {};
+        for (var i in p) {
+          // 属性i是否为p对象的自有属性
+          if (p.hasOwnProperty(i)) {
+            // 属性i是否为复杂类型
+            if (typeof p[i] === 'object') {
+              // 如果p[i]是数组，则创建一个新数组
+              // 如果p[i]是普通对象，则创建一个新对象
+              c[i] = Array.isArray(p[i]) ? [] : {};
+              // 递归拷贝复杂类型的属性
+              this.initItemForUpdate(p[i], c[i]);
+            } else {
+              // 属性是基础类型时，直接拷贝
+              c[i] = p[i];
+            }
+          }
+        }
+        return c;
+      },
+
+      // 分组过滤method
+      filterTag(value, row) {
+        return row.battery === value;
+      },
+      async fuzzyQuery() {
+        await this.$store.dispatch('FUZZY_QUERY',this.filtersKey)
+        this.filtersKey = ''
+        setTimeout(()=>{
+          this.$store.dispatch('GET_PERSON')
+        },3000)
+      }
     }
+  }
   </script>
   <style lang="scss">
     #home {

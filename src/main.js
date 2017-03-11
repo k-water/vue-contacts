@@ -2,7 +2,9 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 
 import Vue from 'vue'
+import Vuex from 'vuex'
 import App from './App'
+import store from './store'
 import Element from 'element-ui'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
@@ -10,7 +12,7 @@ import Home from './router/Home'
 import Group from './router/Group'
 import More from './router/More'
 
-
+Vue.use(Vuex)
 Vue.use(Element)
 Vue.use(VueRouter)
 Vue.use(VueResource)
@@ -26,7 +28,8 @@ const router = new VueRouter({ //创建路由实例
 })
 
 new Vue({
-  router: router,
   el: '#app',
+  store,
+  router,
   render: h => h(App)
 })
