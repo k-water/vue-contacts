@@ -1,20 +1,11 @@
 <template>
   <div id="first">
-    <el-row>
-      <el-col :span="4">
-        <div class="grid-content bg-purple-light">
+    <el-row class="bg-purple-light">
+      <el-col :span="6">
+        <div class="grid-content">
           <span class="left-h">简易通讯录</span>
         </div>
       </el-col>
-      <!--
-      <el-col :span="24">
-        <div class="grid-content-2 bg-blue">
-          <span>
-            <a href="javascript:;">联系人</a>
-          </span>
-        </div>
-      </el-col>
-      -->
     </el-row>
   </div>
 </template>
@@ -23,21 +14,11 @@
     name: 'first',
     data() {
       return {
-        img: require('../assets/logo.png'),
-        msg: ''
       }
     },
     components: {
     },
     methods: {
-      handleClick() {
-        if (this.msg === '') {
-          alert("输入的内容不能为空...")
-        } else {
-          alert("您输入的内容是: " + this.msg)
-          this.msg = ''
-        }
-      }
     }
   }
 </script>
@@ -87,23 +68,44 @@
   }
   
   .grid-content {
-    /*border-radius: 4px;*/
     min-height: 36px;
     height: 36px;
     padding: 12px 20px;
-    img {
-      height: 36px;
-    }
     .left-h {
-      line-height: 36px;
       white-space: nowrap;
-      font-family: Roboto,RobotoDraft,Arial,sans-serif;
       z-index: 986;
-      font-size: 20px;
-      padding-left: 20px
+      font: 1.5em/150% Roboto,RobotoDraft,Arial,sans-serif;
+      padding-left: 20px;
+      
+      background-image: -webkit-linear-gradient(left, #3498db, #f47920 10%, #d71345 20%, #f7acbc 30%, #ffd400 40%, #3498db 50%, #f47920 60%, #d71345 70%, #f7acbc 80%, #ffd400 90%, #3498db);
+      color: transparent;
+      /*文字填充色为透明*/
+      -webkit-text-fill-color: transparent;
+      /*背景剪裁为文字，相当于用背景填充文字 CSS3新属性*/
+      -webkit-background-clip: text;
+      /*背景图片向水平方向扩大一倍，这样background-position才有移动与变化的空间*/
+      -webkit-background-size: 200% 100%;
+      background-size: 200% 100%;
+      /* 动画 */
+      -webkit-animation: masked-animation 4s infinite linear;
     }
   }
-  
+  @keyframes masked-animation {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: -100% 0;
+    }
+  }
+  @-webkit-keyframes masked-animation {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: -100% 0;
+    }
+  }
   .grid-content-2 {
     height: 30px;
     line-height: 30px;

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <First></First>
+    <Headers></Headers>
     <Navigate></Navigate>
     <!--路由出口-->
     <router-view
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-  import First from './components/First'
+  import Headers from './components/Headers'
   import Navigate from './components/Navigate'
   export default {
     data() {
@@ -20,7 +20,7 @@
       }
     },
     components: {
-      First,
+      Headers,
       Navigate
     }
   }
@@ -37,6 +37,6 @@
   }
   
   body {
-    background: #E5E5E5;
+    background: #fff;
   }
 </style>

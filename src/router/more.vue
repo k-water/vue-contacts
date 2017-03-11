@@ -41,10 +41,11 @@
     </el-col>
     
     <!--下载-->
-    <el-col :span="18" :offset="2" v-show="aIndex === 1">
+    <el-col :span="18" :offset="2" v-show="aIndex === 1" class="download">
       <a href="http://localhost:8081/ContactsBe/SmartDownloadServlet?filename=personlist.json">
         <el-button type="success" size="large">
           导出<i class="el-icon-edit el-icon--right">
+
         </el-button>
       </a>
     </el-col>
@@ -128,14 +129,12 @@
       border-color: deepskyblue
     }
   }
-  
   .add-i {
     font-size: 67px;
     color: #97a8be;
     margin: 40px 0 16px;
     line-height: 50px;
   }
-  
   .upload {
     background-color: #fff;
     border: 1px dashed #d9d9d9;
@@ -148,6 +147,8 @@
     position: relative;
     overflow: hidden;
     cursor: pointer;
+    background: #9f7e7e;
+    background-image: repeating-linear-gradient(30deg, hsla(0,0%,100%,.1), hsla(0,0%,100%,.1) 15px,transparent 0, transparent 30px);
     &:hover {
       cursor: pointer;
       border-color: cornflowerblue;
@@ -164,6 +165,22 @@
     display: none;
   }
   
+  .download {
+    width: 360px;
+    height: 180px;
+    border: 1px dashed darkgray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: border-color ease 1s;
+    cursor: pointer;
+    background: #58caca;
+    background-image: repeating-linear-gradient(30deg, hsla(0,0%,100%,.1), hsla(0,0%,100%,.1) 15px,transparent 0, transparent 30px);
+    &:hover {
+      border-color: deepskyblue;
+    }
+  }
+
   .icon {
     font-size: 67px;
     color: #97a8be;

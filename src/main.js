@@ -17,7 +17,7 @@ Vue.use(VueResource)
 Vue.http.options.emulateJSON = true;
 const routes = [
   { path: '/', component: Home },
-  { path: '/groupHome', component: Group },
+  { path: '/group', component: Group },
   { path: '/more', component: More }
 ]
 
@@ -28,10 +28,5 @@ const router = new VueRouter({ //创建路由实例
 new Vue({
   router: router,
   el: '#app',
-  /**
-   * 
-   * 
-   * @param {any} h
-   */
   render: h => h(App)
 })

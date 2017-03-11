@@ -1,9 +1,10 @@
   <template>
     <div id="home">
-      <el-col :span="15" class="searchPos">
+      <!--搜索框-->
+      <el-col :span="13" class="searchPos">
         <div class="grid-content bg-purple-light">
-          <el-input placeholder="请输入你要寻找的内容..." v-model="filtersKey" @keyup.enter="searchWay">
-            <el-button slot="append" class="btn" icon="search" @click="searchWay">
+          <el-input placeholder="请输入你要寻找的内容..." v-model="filtersKey" @keyup.enter.native="fuzzyQuery">
+            <el-button slot="append" class="btn" icon="search" @click="fuzzyQuery">
             </el-button>
           </el-input>
         </div>
@@ -141,6 +142,7 @@
         return {
           contacts: [],
           groups: [],
+          tempContacts: [],
           dialogVisible: false,
           dialogFormVisible: false,
           labelPosition: 'left',
@@ -185,6 +187,7 @@
           this.$http.get('http://localhost:8081/ContactsBe/getPerson').then((res) => {
             let person = res.body
             this.contacts = JSON.parse(person)
+            this.tempContacts = JSON.parse(person)            
           }, error => {
             console.log(error)
           })
@@ -227,7 +230,7 @@
         },
         addGroup() {
           let battery = this.currentForm['battery']
-          this.$http.post('http://localhost:8081/ContactsBe/addGroup', { value: battery, text: battery }).then(response => {
+          this.$http.post('http://localhost:8081/ContactsBe/addGroup', { valname: battery, text: battery }).then(response => {
             console.log(response.status)
           }, error => {
             return console.log(error)
@@ -313,32 +316,27 @@
           return row.battery === value;
         },
         // 模糊查询
-        searchWay() {
-          if (this.filtersKey === '') {
-            confirm('您输入的内容为空...')
-          } else {
-            let flag = 0
-            let isExist = 0
-            let reg = new RegExp(this.filtersKey);
-            for (let i = 0, len = this.contacts.length; i < len; i++) {
-              flag = 0
-              Object.values(this.contacts[i]).forEach(n => {
-                if (reg.test(n)) {
-                  flag++
-                }
-              })
-              if (flag > 0) {
-                confirm('该联系人为：' + '\n' + '姓名：' + this.contacts[i]['name'])
-                isExist++
-              }
-            } // 结束循环
+        fuzzyQuery() {
 
-            // 判断是否有查询结果
-            if (isExist === 0) {
-              confirm('您查询的联系人不存在！！请重新查询...')
-            }
-            this.filtersKey = ''
+          if(this.filtersKey === '') {
+            confirm('查询的内容不能为空，请重新输入！！')
+          } else {
+            this.$http.post('http://localhost:8081/ContactsBe/SearchPerson', {key: this.filtersKey}).then(response => {
+              this.contacts = JSON.parse(response.body)
+              let len = this.contacts.length
+              if(len === 0) {
+                return confirm('您查询的联系人不存在...')
+              } else {
+                return confirm('查询到了' + len + '位联系人')
+              }
+            }, err => {
+              return console.log(err)
+            })
           }
+          this.filtersKey = ''
+          setTimeout(() => {
+            this.contacts = this.tempContacts
+          }, 3000)
         }
       }
     }

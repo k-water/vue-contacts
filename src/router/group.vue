@@ -2,9 +2,9 @@
   <div id="group">
     <el-col :span="4">
       <ul class="ul-menu">
-        <li class="ul-menu-item" v-for="(item, index) in getItems" @click="init(item.value)">
-          {{item.value}}
-          <i class="el-icon-delete ul-menu-item-delete" @click="delGroup(index,item.value)">
+        <li class="ul-menu-item" v-for="(item, index) in getItems" @click="init(item.valname)">
+          {{item.valname}}
+          <i class="el-icon-delete ul-menu-item-delete" @click="delGroup(index,item.valname)">
           </i>
         </li>
         <li class="ul-menu-item" style="padding: 0 5px" @click="addGroup">
@@ -77,7 +77,7 @@
         this.$http.get('http://localhost:8081/ContactsBe/getGroup').then(response => {
           this.getItems = JSON.parse(response.body)
           // debug
-          // console.log(this.getItems[0]['name'])
+          // console.log(this.getItems)
         }, error => {
           return console.log(error)
         })
@@ -91,8 +91,15 @@
             type: 'success',
             message: '你添加的分组是: ' + value
           });
-          this.getItems.push({value: value})
-          this.$http.post('http://localhost:8081/ContactsBe/addGroup', {text: value,value: value}).then(response => {
+
+          this.getItems.push({valname: value})
+          // let tmp = []
+          // for(let i = 0, len = this.getItems.length; i< len; i++) {
+          //   let key = Object.values(this.getItems[i])
+          //   tmp.push(key[0])
+          // }
+
+          this.$http.post('http://localhost:8081/ContactsBe/addGroup', {text: value, valname: value}).then(response => {
             console.log(response.status)
           }, error => {
             return console.log(error)
@@ -106,10 +113,9 @@
       },
       delGroup(index,item) {
         if (confirm('您确认删除吗？')) {
-          // console.log(item)
           this.getItems.splice(index, 1)
         }
-        this.$http.post('http://localhost:8081/ContactsBe/delGroup', {value: item}).then(response => {
+        this.$http.post('http://localhost:8081/ContactsBe/delGroup', {valname: item}).then(response => {
           console.log(response.status)
         }, error => {
           return console.log(error)

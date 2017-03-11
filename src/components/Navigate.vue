@@ -6,7 +6,7 @@
           </i>
           Contacts
         </el-menu-item>
-        <el-menu-item index="2" :route="{path: '/groupHome'}">
+        <el-menu-item index="2" :route="{path: '/group'}">
           <i class="el-icon-menu">
           </i>
           群組
