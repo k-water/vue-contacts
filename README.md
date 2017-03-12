@@ -37,7 +37,7 @@
 
 #### 后台
 * JAVA
-* servlet
+* Servlet
 * MySQL
 
 > 后台用Tomcat做服务器，用 Eclipse J2EE 构建web项目
