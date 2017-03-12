@@ -39,19 +39,27 @@ const actions = {
     }
   },
   async ADD_PERSON({ commit }, list) {
+    await commit(types.ADD_PERSON, list)
     await Vue.http.post('http://localhost:8081/ContactsBe/addPerson', list).then(response => {
       console.log('addPerson status is: ' + response.status)
     }, error => {
       console.log(error)
     })
   },
-  DEL_PERSON({ commit }, index) {
+  async DEL_PERSON({ commit }, person, index) {
+    Vue.http.post('http://localhost:8081/ContactsBe/delPerson', person).then(response => {
+      console.log('delPerson status is: ' + response.status)
+    }, error => {
+      console.log(error)
+    })
     commit(types.DEL_PERSON, index)
-      // Vue.http.post('http://localhost:8081/ContactsBe/delPerson', row).then(response => {
-      //   console.log('delPerson status is: ' + response.status)
-      // }, error => {
-      //   console.log(error)
-      // })
+  },
+  UPDATE_PERSON({ commit }, person) {
+    Vue.http.post('http://localhost:8081/ContactsBe/updatePerson', person).then(response => {
+      console.log('update status is: ' + response.status)
+    }, error => {
+      console.log(error)
+    })
   }
 }
 
@@ -61,6 +69,11 @@ const mutations = {
   },
   [types.DEL_PERSON](state, index) {
     state.contacts.splice(index, 1)
+  },
+  [types.ADD_PERSON](state, person) {
+    state.contacts.push(
+      person
+    )
   }
 }
 

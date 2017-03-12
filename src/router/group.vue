@@ -1,13 +1,23 @@
 <template>
   <div id="group">
+          <!--搜索框-->
+    <el-col :span="13" class="searchPos">
+      <div class="grid-content bg-purple-light">
+        <el-input placeholder="请输入你要寻找的内容..." v-model="filtersKey" @keyup.enter.native="fuzzyQuery">
+          <el-button slot="append" class="btn" icon="search" @click="fuzzyQuery">
+          </el-button>
+        </el-input>
+      </div>
+    </el-col>
+
     <el-col :span="4">
       <ul class="ul-menu">
-        <li class="ul-menu-item" v-for="(item, index) in getItems" @click="init(item.valname)">
-          {{item.valname}}
-          <i class="el-icon-delete ul-menu-item-delete" @click="delGroup(index,item.valname)">
+        <li class="ul-menu-item" v-for="(item, index) in getItems" @click="init(item.value)">
+          {{item.value}}
+          <i class="el-icon-delete ul-menu-item-delete" @click="delGroup(index,item.value)">
           </i>
         </li>
-        <li class="ul-menu-item" style="padding: 0 5px" @click="addGroup">
+        <li class="ul-menu-item" style="padding: 0 5px" @click="dialogFormVisible = true">
           <i class="el-icon-plus" style="padding-right: 5px">
           </i>
           创建分组
@@ -33,101 +43,151 @@
         </el-table-column>
         <el-table-column label="删除" width="150">
           <template scope="scope">
-            <el-button type="danger" size="small" @click="delContact(scope.$index, scope.row)">
+            <el-button type="danger" size="small" @click="delPerson(scope.$index, scope.row)">
               Del
             </el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-col>
+
+    <!--addGroup dialog-->
+    <el-dialog title="添加分组" v-model="dialogFormVisible">
+      <el-form :model="form" :label-position="labelPosition">
+        <el-form-item label="分组名称" :label-width="formLabelWidth" props="battery">
+          <el-input v-model="form.battery" auto-complete="off" placeholder="请输入分组名称" @keyup.enter.native = "addGroup"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancelAdd">取 消</el-button>
+        <el-button type="primary" @click="addGroup">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+  import {mapGetters} from 'vuex'
   export default {
     data() {
       return {
         groupData: [],
-        getItems: [],
-        currentRow: ''
+        currentRow: '',
+        dialogFormVisible: false,
+        labelPosition: 'left',
+        formLabelWidth: '80px',
+        filtersKey: '',
+        form: {
+          battery: ''
+        }
       }
+    },
+    computed: {
+      ...mapGetters([
+        'getItems',
+        'allContacts'
+      ])
+    },
+    created() {
+      this.$store.dispatch('GET_PERSON')
+      this.$store.dispatch('GET_GROUP')
     },
     mounted() {
       this.$nextTick(() => {
-        this.getGroup()
         this.init()
       })
     },
     methods: {
       init(tmpGroup = '家') {
         this.groupData = []
-        this.$http.get('http://localhost:8081/ContactsBe/getPerson').then((res) => {
-          let tempData = JSON.parse(res.body)
-          // console.log(tempData)
-          for (let i = 0; i < tempData.length; i++) {
-            if (tempData[i]['battery'] === tmpGroup) {
-              this.groupData.push(tempData[i])
-              // debug
-              // console.log(tempData[i])
-            }
+        for (let i = 0; i < this.allContacts.length; i++) {
+          if (this.allContacts[i]['battery'] === tmpGroup) {
+            this.groupData.push(this.allContacts[i])
           }
-        })
-      },
-      getGroup() {
-        this.$http.get('http://localhost:8081/ContactsBe/getGroup').then(response => {
-          this.getItems = JSON.parse(response.body)
-          // debug
-          // console.log(this.getItems)
-        }, error => {
-          return console.log(error)
-        })
+        }
       },
       addGroup() {
-        this.$prompt('请输入分组名称', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-        }).then(({ value }) => {
+        let judge = this.judge()
+        if(judge === 1) {
           this.$message({
-            type: 'success',
-            message: '你添加的分组是: ' + value
+            showClose: true,
+            message: '分组已存在，请重新添加',
+            type: 'warning',
+            duration: 2000
           });
-
-          this.getItems.push({valname: value})
-          // let tmp = []
-          // for(let i = 0, len = this.getItems.length; i< len; i++) {
-          //   let key = Object.values(this.getItems[i])
-          //   tmp.push(key[0])
-          // }
-
-          this.$http.post('http://localhost:8081/ContactsBe/addGroup', {text: value, valname: value}).then(response => {
-            console.log(response.status)
-          }, error => {
-            return console.log(error)
-          })
-        }).catch(() => {
+        } else if(this.form.battery === ''){
           this.$message({
-            type: 'info',
-            message: '取消添加'
-          });       
-        }); 
+            showClose: true,
+            message: '添加的分组不能为空，请重新输入',
+            type: 'error',
+            duration: 2000
+          });
+        } else {
+          this.$message({
+            showClose: true,
+            message: '成功添加分组：' + this.form.battery ,
+            type: 'success',
+            duration: 2000
+          });
+          let params = {
+            text: this.form.battery,
+            value: this.form.battery
+          }
+          this.$store.dispatch('ADD_GROUP',params)
+        }
+
+        this.form.battery = ''
+        this.dialogFormVisible = false
+      },
+      judge() {
+        let tmp = []
+        for(let i = 0, len = this.getItems.length; i< len; i++) {
+          let key = Object.values(this.getItems[i])
+          tmp.push(key[0])
+        }
+        let flag = 0
+        for(let k = 0, len = tmp.length; k < len; k++) {
+          if(tmp[k] === this.form.battery) {
+            flag = 1
+          }else {
+            continue
+          }
+        }
+        return flag
+      },
+      cancelAdd() {
+        this.$message({
+          showClose: true,
+          message: '取消添加',
+          duration: 2000
+        });
+        this.form.battery = ''
+        this.dialogFormVisible = false
       },
       delGroup(index,item) {
+        let params = {
+          value: item
+        }
         if (confirm('您确认删除吗？')) {
           this.getItems.splice(index, 1)
+          this.$store.dispatch('DEL_GROUP', params, index)
         }
-        this.$http.post('http://localhost:8081/ContactsBe/delGroup', {valname: item}).then(response => {
-          console.log(response.status)
-        }, error => {
-          return console.log(error)
-        })
       },
       handleCurrentChange(val) {
         this.currentRow = val
       },
-      delContact(index, row) {
+      delPerson(index, row) {
         if (confirm('您确认删除吗？')) {
           this.groupData.splice(index, 1)
         }
+      },
+      // 待完善
+      async fuzzyQuery() {
+        await this.$store.dispatch('FUZZY_QUERY',this.filtersKey)
+        this.filtersKey = ''
+        setTimeout(()=>{
+          this.$store.dispatch('GET_PERSON')
+        },3000)
       }
     }
   }

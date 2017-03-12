@@ -68,10 +68,10 @@
           </el-table-column>
           <el-table-column label="操作">
             <template scope="scope">
-              <el-button size="small" @click="handleEdit(scope.$index, scope.row)">
+              <el-button size="small" @click="editPerson(scope.$index, scope.row)">
                 Edit
               </el-button>
-              <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">
+              <el-button size="small" type="danger" @click="delPerson(scope.$index, scope.row)">
                 Del
               </el-button>
             </template>
@@ -125,10 +125,10 @@
           <el-button @click="dialogVisible=false" type="info" v-else>
             取 消
           </el-button>
-          <el-button type="primary" @click="addContacts" v-if="sure">
+          <el-button type="primary" @click="addPerson" v-if="sure">
             确 定
           </el-button>
-          <el-button type="warning" @click="changeContact" v-else>
+          <el-button type="warning" @click="changePerson" v-else>
             修 改
           </el-button>
         </span>
@@ -182,17 +182,9 @@
     },
     created() {
       this.$store.dispatch('GET_PERSON')
-      this.getGroup()
+      this.$store.dispatch('GET_GROUP')
     },
     methods: {
-
-      getGroup() {
-        this.$http.get('http://localhost:8081/ContactsBe/getGroup').then(response => {
-          this.groups = JSON.parse(response.body)
-        }, error => {
-          return console.log(error)
-        })
-      },
       // 点击Add打开Dialog 并清空上一次的数据
       openDialog() {
         this.dialogVisible = true
@@ -203,39 +195,29 @@
       },
 
       //添加新的数据
-      async addContacts() {
+      async addPerson() {
         this.dialogVisible = false
         this.currentForm = this.form
         this.currentForm = Object.assign({}, this.currentForm, { id: this.contacts.length + 1 })
         this.$nextTick(() => {
-          this.contacts.push(this.currentForm)
           this.$store.dispatch('ADD_PERSON', this.currentForm)
         })
         // 增加分组
-        await this.addGroup()
-      },
-      addGroup() {
-        let battery = this.currentForm['battery']
-        this.$http.post('http://localhost:8081/ContactsBe/addGroup', { valname: battery, text: battery }).then(response => {
-          console.log(response.status)
-        }, error => {
-          return console.log(error)
-        })
+        let params = {
+          text: this.currentForm['battery'],
+          value: this.currentForm['battery']
+        }
+        await this.$store.dispatch('ADD_GROUP', params)
       },
       // 删除一行数据
-      handleDelete(index, row) {
+      delPerson(index, row) {
         if (confirm('您确定删除此联系人吗？')) {
-          this.$store.dispatch('DEL_PERSON', index)
-          this.$http.post('http://localhost:8081/ContactsBe/delPerson', row).then(response => {
-            console.log('delPerson status is: ' + response.status)
-          }, error => {
-            console.log(error)
-          })
+          this.$store.dispatch('DEL_PERSON', row, index)
         }
       },
 
       //编辑一行数据
-      handleEdit(index, row) {
+      editPerson(index, row) {
         this.sure = false
         this.dialogVisible = true
         this.form = this.initItemForUpdate(row)
@@ -243,7 +225,7 @@
       },
 
       // 修改一行数据
-      changeContact() {
+      changePerson() {
         for (let k = 0; k < this.contacts.length; k++) {
           if (typeof this.contacts[k]['index'] === 'undefined') {
             this.$set(this.contacts[k], 'index', k)
@@ -261,15 +243,9 @@
             break;
           }
         }
-        // console.log(tmpContact)
-        // 发送数据update sql语句
-        this.$http.post('http://localhost:8081/ContactsBe/updatePerson', tmpContact).then(response => {
-          console.log('update status is: ' + response.status)
-        }, error => {
-          console.log(error)
-        })
-
-        // 关闭dialog
+        
+        this.$store.dispatch('UPDATE_PERSON', tmpContact)
+       
         this.dialogVisible = false
         this.form = {}
       },
