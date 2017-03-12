@@ -26,9 +26,11 @@
   
 #### 前端
   
-* vue
-* vueRouter
-* vue-cli
+* Vue
+* Vuex
+* VueRouter
+* VueResource
+* Vue-cli
 * ElementUI
 
 >以vue-cli构建项目，node启动，涉及到一点webpack
