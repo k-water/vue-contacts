@@ -23,7 +23,8 @@ const routes = [
   { path: '/more', component: More }
 ]
 
-const router = new VueRouter({ //创建路由实例
+//创建路由实例
+const router = new VueRouter({
   routes
 })
 

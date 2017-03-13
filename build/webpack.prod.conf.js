@@ -12,7 +12,7 @@ var webpackConfig = merge(baseWebpackConfig, {
   module: {
     loaders: utils.styleLoaders({ sourceMap: config.build.productionSourceMap, extract: true })
   },
-  devtool: config.build.productionSourceMap ? '#source-map' : false,
+  devtool: '#source-map',
   output: {
     path: config.build.assetsRoot,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
@@ -48,8 +48,8 @@ var webpackConfig = merge(baseWebpackConfig, {
         removeComments: true,
         collapseWhitespace: true,
         removeAttributeQuotes: true
-        // more options:
-        // https://github.com/kangax/html-minifier#options-quick-reference
+          // more options:
+          // https://github.com/kangax/html-minifier#options-quick-reference
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
@@ -73,6 +73,20 @@ var webpackConfig = merge(baseWebpackConfig, {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
       chunks: ['vendor']
+    }),
+    new ExtractTextPlugin("[name].css"),
+    new webpack.optimize.CommonsChunkPlugin({ name: 'vue', minChunks: 2 }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"production"'
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
+      comments: false,
+      compress: {
+        warnings: false
+      }
     })
   ]
 })
