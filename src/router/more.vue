@@ -42,7 +42,7 @@
     
     <!--下载-->
     <el-col :span="18" :offset="2" v-show="aIndex === 1" class="download">
-      <a href="http://localhost:8081/ContactsBe/SmartDownloadServlet?filename=personlist.json">
+      <a href="http://localhost:8081/ContactsBe/POIoutTemplate">
         <el-button type="success" size="large">
           导出<i class="el-icon-edit el-icon--right"></i>
 
