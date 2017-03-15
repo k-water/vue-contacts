@@ -1,6 +1,6 @@
 <template>
   <div id="group">
-          <!--搜索框-->
+    <!--搜索框-->
     <el-col :span="13" class="searchPos">
       <div class="grid-content bg-purple-light">
         <el-input placeholder="请输入你要寻找的内容..." v-model="filtersKey" @keyup.enter.native="fuzzyQuery">
@@ -83,10 +83,10 @@
       }
     },
     computed: {
-      ...mapGetters([
-        'getItems',
-        'allContacts'
-      ])
+      ...mapGetters({
+        getItems: 'getItems',
+        allContacts: 'allContacts'
+      })
     },
     created() {
       this.$store.dispatch('GET_PERSON')
@@ -188,13 +188,9 @@
           this.groupData.splice(index, 1)
         }
       },
-      // 待完善
-      async fuzzyQuery() {
-        await this.$store.dispatch('FUZZY_QUERY',this.filtersKey)
-        this.filtersKey = ''
-        setTimeout(()=>{
-          this.$store.dispatch('GET_PERSON')
-        },3000)
+
+      fuzzyQuery() {
+        this.$store.dispatch('FUZZY_QUERY',this.filtersKey)
       }
     }
   }

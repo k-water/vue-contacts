@@ -20,7 +20,7 @@
     <el-col :span="18" :offset="2" v-show="currentIndex === 0">
       <form name="uploadForm" method="POST" 
         enctype="MULTIPART/FORM-DATA" 
-        action="http://localhost:8081/ContactsBe/Upload"
+        action="http://119.29.151.195:8080/ContactsBe/Upload"
         target="post" class="upload">
 
         <!--隐藏input file-->
@@ -42,7 +42,7 @@
     
     <!--下载-->
     <el-col :span="18" :offset="2" v-show="aIndex === 1" class="download">
-      <a href="http://localhost:8081/ContactsBe/POIoutTemplate">
+      <a href="http://119.29.151.195:8080/ContactsBe/POIoutTemplate">
         <el-button type="success" size="large">
           导出<i class="el-icon-edit el-icon--right"></i>
 
@@ -79,11 +79,20 @@
         let suffix = this.fileName.substring(pos + 1)
         console.log(suffix)
         if (this.fileName === '') {
-          confirm('请先选择文件！！！')
+          this.$alert('您还没有选择文件，请先选择需上传的文件', '提示', {
+            confirmButtonText: '确定',
+            type: 'info'
+          });
         } else if (!reg.test(suffix)) {
-          confirm('请选择Excel文件，后缀名为xls！！！')
+          this.$alert('文件格式不正确，请选择Excel文件，后缀名为xls', '警告', {
+            confirmButtonText: '确定',
+            type: 'warning'
+          });
         } else {
-          confirm('上传成功！！')
+          this.$alert('上传成功，请回首页查看', '提示', {
+            confirmButtonText: '确定',
+            type: 'success'
+          });
         }
         this.fileName = ''
       },

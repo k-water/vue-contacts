@@ -210,10 +210,24 @@
       },
       // 删除一行数据
       delPerson(index, row) {
-        if (confirm('您确定删除此联系人吗？')) {
+        this.$confirm('此操作将永久删除该联系人, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
           this.$store.dispatch('DEL_PERSON', row)
           this.contacts.splice(index, 1)
-        }
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          }); 
+        });
+        
       },
 
       //编辑一行数据

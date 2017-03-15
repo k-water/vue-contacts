@@ -82,7 +82,7 @@ var webpackConfig = merge(baseWebpackConfig, {
       }
     }),
     new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
+      sourceMap: false,
       comments: false,
       compress: {
         warnings: false
