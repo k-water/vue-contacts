@@ -212,7 +212,8 @@
       // 删除一行数据
       delPerson(index, row) {
         if (confirm('您确定删除此联系人吗？')) {
-          this.$store.dispatch('DEL_PERSON', row, index)
+          this.$store.dispatch('DEL_PERSON', row)
+          this.contacts.splice(index, 1)
         }
       },
 

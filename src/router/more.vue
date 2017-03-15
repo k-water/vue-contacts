@@ -20,7 +20,7 @@
     <el-col :span="18" :offset="2" v-show="currentIndex === 0">
       <form name="uploadForm" method="POST" 
         enctype="MULTIPART/FORM-DATA" 
-        action="http://localhost:8081/ContactsBe/SmartUploadServlet"
+        action="http://localhost:8081/ContactsBe/Upload"
         target="post" class="upload">
 
         <!--隐藏input file-->
@@ -74,14 +74,14 @@
     mounted() {},
     methods: {
       uploadJudge() {
-        let reg = /^json$/
+        let reg = /^xls$/
         let pos = this.fileName.lastIndexOf('.')
         let suffix = this.fileName.substring(pos + 1)
         console.log(suffix)
         if (this.fileName === '') {
           confirm('请先选择文件！！！')
         } else if (!reg.test(suffix)) {
-          confirm('请选择JSON文件！！！')
+          confirm('请选择Excel文件，后缀名为xls！！！')
         } else {
           confirm('上传成功！！')
         }

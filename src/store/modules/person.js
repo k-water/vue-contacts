@@ -46,13 +46,12 @@ const actions = {
       console.log(error)
     })
   },
-  async DEL_PERSON({ commit }, person, index) {
+  DEL_PERSON({ commit }, person) {
     Vue.http.post('http://localhost:8081/ContactsBe/delPerson', person).then(response => {
       console.log('delPerson status is: ' + response.status)
     }, error => {
       console.log(error)
     })
-    commit(types.DEL_PERSON, index)
   },
   UPDATE_PERSON({ commit }, person) {
     Vue.http.post('http://localhost:8081/ContactsBe/updatePerson', person).then(response => {
