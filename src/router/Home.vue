@@ -3,7 +3,7 @@
       <!--搜索框-->
       <el-col :span="13" class="searchPos">
         <div class="grid-content bg-purple-light">
-          <el-input placeholder="请输入你要寻找的内容..." v-model="filtersKey" @keyup.enter.native="fuzzyQuery">
+          <el-input placeholder="请输入你要寻找的内容..." v-model="filtersKey" @change="fuzzyQuery(filtersKey)">
             <el-button slot="append" class="btn" icon="search" @click="fuzzyQuery">
             </el-button>
           </el-input>
@@ -81,7 +81,7 @@
       <!--dialog模拟框添加数据-->
       <el-dialog title="添加联系人" v-model="dialogVisible" size="small">
         <el-form :model="form" :rules="rules" ref="from" :label-position="labelPosition"
-        label-width="120px">
+        label-width="100px" class="add-form">
           <el-form-item label="姓名" required>
             <el-input v-model="form.name" auto-complete="off">
             </el-input>
@@ -99,8 +99,7 @@
             </el-input>
           </el-form-item>
           <el-form-item label="生日" prop="birthday" required>
-            <el-input type="date" format="yyyy-MM-dd" placeholder="选择日期" v-model="form.birthday"
-            style="width: 70%;">
+            <el-input type="date" format="yyyy-MM-dd" placeholder="选择日期" v-model="form.birthday">
             </el-input>
           </el-form-item>
           <el-form-item label="个人主页" prop="site">
@@ -278,12 +277,12 @@
       filterTag(value, row) {
         return row.battery === value;
       },
-      async fuzzyQuery() {
-        await this.$store.dispatch('FUZZY_QUERY',this.filtersKey)
-        this.filtersKey = ''
-        setTimeout(()=>{
-          this.$store.dispatch('GET_PERSON')
-        },3000)
+      fuzzyQuery(key) {
+        this.$store.dispatch('FUZZY_QUERY',key)
+        // this.filtersKey = ''
+        // setTimeout(()=>{
+        //   this.$store.dispatch('GET_PERSON')
+        // },3000)
       }
     }
   }
@@ -291,6 +290,16 @@
   <style lang="scss">
     #home {
       padding: 30px 30px 0 20px;
+    }
+    .add-form {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      label {
+        padding-left: 25px !important;
+        padding-right: 0px !important;
+      }
     }
     .pos {
       position: absolute;

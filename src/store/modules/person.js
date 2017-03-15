@@ -22,21 +22,11 @@ const actions = {
     })
   },
   FUZZY_QUERY({ commit }, fkey) {
-    if (fkey === '') {
-      return confirm('查询的内容不能为空，请重新输入！！')
-    } else {
-      Vue.http.post('http://localhost:8081/ContactsBe/SearchPerson', { key: fkey }).then(res => {
-        commit(types.GET_PERSON, { contacts: JSON.parse(res.body) })
-        let len = state.contacts.length
-        if (len === 0) {
-          return confirm('您查询的联系人不存在...')
-        } else {
-          return confirm('查询到了' + len + '位联系人')
-        }
-      }, err => {
-        return console.log(err)
-      })
-    }
+    Vue.http.post('http://localhost:8081/ContactsBe/SearchPerson', { key: fkey }).then(res => {
+      commit(types.GET_PERSON, { contacts: JSON.parse(res.body) })
+    }, err => {
+      return console.log(err)
+    })
   },
   async ADD_PERSON({ commit }, list) {
     await commit(types.ADD_PERSON, list)

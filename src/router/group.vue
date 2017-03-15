@@ -52,7 +52,7 @@
     </el-col>
 
     <!--addGroup dialog-->
-    <el-dialog title="添加分组" v-model="dialogFormVisible">
+    <el-dialog title="添加分组" v-model="dialogFormVisible" size="tiny">
       <el-form :model="form" :label-position="labelPosition">
         <el-form-item label="分组名称" :label-width="formLabelWidth" props="battery">
           <el-input v-model="form.battery" auto-complete="off" placeholder="请输入分组名称" @keyup.enter.native = "addGroup"></el-input>
@@ -109,25 +109,19 @@
       addGroup() {
         let judge = this.judge()
         if(judge === 1) {
-          this.$message({
-            showClose: true,
-            message: '分组已存在，请重新添加',
-            type: 'warning',
-            duration: 2000
+         this.$alert('您添加的分组已存在，请重新添加', '提示', {
+            confirmButtonText: '确定',
+            type: 'info'
           });
         } else if(this.form.battery === ''){
-          this.$message({
-            showClose: true,
-            message: '添加的分组不能为空，请重新输入',
-            type: 'error',
-            duration: 2000
+           this.$alert('您添加的分组不能为空，请重新输入', '警告', {
+            confirmButtonText: '确定',
+            type: 'warning'
           });
         } else {
-          this.$message({
-            showClose: true,
-            message: '成功添加分组：' + this.form.battery ,
-            type: 'success',
-            duration: 2000
+          this.$alert('您添加的分组是：' + this.form.battery, '成功', {
+            confirmButtonText: '确定',
+            type: 'success'
           });
           let params = {
             text: this.form.battery,
@@ -168,10 +162,23 @@
         let params = {
           value: item
         }
-        if (confirm('您确认删除吗？')) {
+        this.$confirm('此操作将永久删除该分组, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
           this.getItems.splice(index, 1)
           this.$store.dispatch('DEL_GROUP', params, index)
-        }
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          }); 
+        });
       },
       handleCurrentChange(val) {
         this.currentRow = val
