@@ -3,8 +3,10 @@
       <!--搜索框-->
       <el-col :span="13" class="searchPos">
         <div class="grid-content bg-purple-light">
-          <el-input placeholder="请输入你要寻找的内容..." v-model="filtersKey" @change="fuzzyQuery(filtersKey)">
-            <el-button slot="append" class="btn" icon="search" @click="fuzzyQuery">
+          <el-input placeholder="请输入你要寻找的内容..." id="sKey" v-model="filtersKey" @change="fuzzyQuery(filtersKey)">
+            <el-button slot="append" class="btn" icon="search" @click="searchPerson" v-if="this.filtersKey === ''">
+            </el-button>
+            <el-button slot="append" class="btn" icon="circle-cross" v-else>
             </el-button>
           </el-input>
         </div>
@@ -146,6 +148,7 @@
         dialogFormVisible: false,
         labelPosition: 'left',
         sure: 'true',
+        focusStatus: false,
         currentForm: {},
         currentIndex: '',
         filtersKey: '',
@@ -191,6 +194,13 @@
         for (let value in this.form) {
           this.form[value] = ''
         }
+      },
+
+      searchPerson() {
+        let input = document.querySelector('#sKey')
+        input.children[0].focus()
+        this.$store.dispatch('GET_PERSON')
+        this.filtersKey = ''
       },
 
       //添加新的数据
@@ -293,10 +303,6 @@
       },
       fuzzyQuery(key) {
         this.$store.dispatch('FUZZY_QUERY',key)
-        // this.filtersKey = ''
-        // setTimeout(()=>{
-        //   this.$store.dispatch('GET_PERSON')
-        // },3000)
       }
     }
   }

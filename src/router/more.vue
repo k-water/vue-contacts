@@ -17,7 +17,7 @@
           
 
     <!--上传-->
-    <el-col :span="18" :offset="2" v-show="currentIndex === 0">
+    <el-col :span="18" :offset="1" v-show="currentIndex === 0" class="warp">
       <form name="uploadForm" method="POST" 
         enctype="MULTIPART/FORM-DATA" 
         action="http://119.29.151.195:8080/ContactsBe/Upload"
@@ -38,6 +38,15 @@
           <input type="submit" name="submit" value="上传" class="el-button" @click="uploadJudge">
         </div>
       </form>
+
+      <section class="tip">
+        <h3>温馨提示</h3>
+        <p>文件上传的格式为Excel</p>
+        <span>参考格式如下</span>
+        <p>其中姓名，邮箱，手机，地址为必填项</p>
+        <img src="http://oc1gyfe6q.qnssl.com/17-3-16/2716775-file_1489676097356_edb9.png" alt="">
+        <img src="http://oc1gyfe6q.qnssl.com/17-3-16/33026023-file_1489676113635_beab.png" alt="">
+      </section>
     </el-col>
     
     <!--下载-->
@@ -123,6 +132,12 @@
     padding: 30px;
   }
   
+  .warp {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
   .add {
     background-color: #fff;
     border: 1px dashed #d9d9d9;
@@ -149,7 +164,7 @@
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
     box-sizing: border-box;
-    width: 360px;
+    width: 40%;
     height: 180px;
     text-align: center;
     cursor: pointer;
@@ -193,5 +208,20 @@
   .icon {
     font-size: 67px;
     color: #97a8be;
+  }
+  .tip {
+    width: 50%;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-image: repeating-linear-gradient(30deg, hsla(0,0%,100%,.1), hsla(0,0%,100%,.1) 15px,transparent 0, transparent 30px);
+    img {
+      max-width: 100%;
+    }
+    @media (min-width: 1290px) {
+      height: 600px;
+    }
   }
 </style>
