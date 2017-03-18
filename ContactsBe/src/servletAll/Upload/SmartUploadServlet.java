@@ -37,13 +37,13 @@ public class SmartUploadServlet extends HttpServlet {
 		List<Person> list = JSON.parseArray(tmp, Person.class);
 		for (Person person : list) {
 			String name = person.getName();
-			String id = person.getId();
+			int id = person.getId();
 			String birthday = person.getBirthday();
 			String email = person.getEmail();
 			String phoneNumber = person.getPhoneNumber();
 			String address = person.getAddress();
 			String site = person.getSite();
-			String group = person.getGroup();
+			String group = person.getBattery();
 
 			String sql = "insert into personlist(name,id,birthday,email,phoneNumber,address,site,battery) values('"
 					+ name + "','" + id + "','" + birthday + "','" + email + "','" + phoneNumber + "','" + address

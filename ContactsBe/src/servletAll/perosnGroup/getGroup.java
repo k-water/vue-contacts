@@ -1,12 +1,7 @@
 package servletAll.perosnGroup;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.*;
+import java.sql.*;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -16,7 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSON;
+
+import servletAll.common.sql_data;
 import servletAll.perosnGroup.Group;
+
 /**
  * Servlet implementation class getGroup
  * 
@@ -27,7 +25,7 @@ import servletAll.perosnGroup.Group;
 @WebServlet("/getGroup")
 public class getGroup extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private Connection conn;
+
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -43,13 +41,6 @@ public class getGroup extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		// 加载访问数据库的驱动
-		final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-		// 访问数据库的路径
-		final String DB_URL = "jdbc:mysql://localhost/TEST?useUnicode=true&characterEncoding=utf-8";
-		// 连接数据库的用户名和密码
-		final String USER = "root";
-		final String PASS = "root";
 
 		// 设置请求头格式
 		response.setContentType("text/html");
@@ -60,17 +51,13 @@ public class getGroup extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter out = response.getWriter();
-		Statement stmt = null;
+
+		sql_data db = new sql_data();
+
 		try {
 
-			Class.forName(JDBC_DRIVER);
-
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
-			stmt = ((Connection) conn).createStatement();
-			String sql;
-			sql = "SELECT * FROM `grouplist`";
-			ResultSet rs = stmt.executeQuery(sql);
+			String sql = "SELECT * FROM `grouplist`";
+			ResultSet rs = db.executeQuery(sql);
 			ArrayList<Object> list = new ArrayList<>();
 
 			while (rs.next()) {
@@ -85,27 +72,11 @@ public class getGroup extends HttpServlet {
 			out.println(jsonString);
 
 			rs.close();
-			stmt.close();
-			conn.close();
 		} catch (SQLException se) {
 
 			se.printStackTrace();
 		} catch (Exception e) {
-
 			e.printStackTrace();
-		} finally {
-
-			try {
-				if (stmt != null)
-					stmt.close();
-			} catch (SQLException se2) {
-			}
-			try {
-				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
-				se.printStackTrace();
-			}
 		}
 	}
 }

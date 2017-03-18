@@ -16,20 +16,19 @@ import com.jspsmart.upload.SmartUploadException;
 @WebServlet("/SmartDownloadServlet")
 public class SmartDownloadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
 
-    public SmartDownloadServlet() {
-        super();
+	public SmartDownloadServlet() {
+		super();
 
-    }
+	}
 
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doPost(request, response);
 	}
 
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		response.setContentType("application/x-msdownload");
 		String filename = request.getParameter("filename");
 		System.out.println(filename);
@@ -37,7 +36,7 @@ public class SmartDownloadServlet extends HttpServlet {
 		su.initialize(getServletConfig(), request, response);
 		su.setContentDisposition(null);
 		try {
-			su.downloadFile("F:/workspace_J2EE/ContactsBe/uploadFile/"+ filename);
+			su.downloadFile(getServletContext().getRealPath("/") + "uploadFile/" + filename);
 		} catch (SmartUploadException e) {
 			e.printStackTrace();
 		}

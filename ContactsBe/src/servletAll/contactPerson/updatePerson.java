@@ -1,6 +1,9 @@
 package servletAll.contactPerson;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -62,16 +65,32 @@ public class updatePerson extends HttpServlet {
 		String birthday = request.getParameter("birthday");
 		String address = request.getParameter("address");
 		String site = request.getParameter("site");
-		String group = request.getParameter("battery");
-		String id = request.getParameter("id");
-		System.err.println(name);
+		String battery = request.getParameter("battery");
+		String homeNumber = request.getParameter("homeNumber");
+		// System.out.println(name);
 
-		String sql = "update personlist set name='" + name
-					 + "',email='" + email + "',phoneNumber='" + phoneNumber
-					 + "',address='" + address + "',site='" + site
-					 + "',battery='" + group + "',birthday='" + birthday
-					 + "'where id='" + id + "'";
 		sql_data db = new sql_data();
+		String searchSql = "SELECT * FROM `personlist`";
+		int id = 0;
+		ResultSet rs = db.executeQuery(searchSql);
+		try {
+			while (rs.next()) {
+				if (rs.getString("name").equals(name)) {
+					id = rs.getInt("id");
+					break;
+				} else {
+					continue;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		String sql = "update personlist set name='" + name + "',email='" + email + "',phoneNumber='" + phoneNumber
+				+ "',address='" + address + "',homeNumber='" + homeNumber + "',site='" + site + "',battery='" + battery
+				+ "',birthday='" + birthday + "'where id='" + id + "'";
+
 		db.executeUpdate(sql);
 	}
 

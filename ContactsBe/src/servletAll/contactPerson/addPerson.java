@@ -1,7 +1,7 @@
 package servletAll.contactPerson;
 
 import java.io.IOException;
-import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -10,9 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.mysql.jdbc.PreparedStatement;
 import servletAll.common.*;
-import servletAll.contactPerson.Person;
 
 /**
  * Servlet implementation class addPerson
@@ -63,15 +61,28 @@ public class addPerson extends HttpServlet {
 		String birthday = request.getParameter("birthday");
 		String address = request.getParameter("address");
 		String site = request.getParameter("site");
-		String group = request.getParameter("battery");
-		String id = request.getParameter("id");
+		String battery = request.getParameter("battery");
 		String homeNumber = request.getParameter("homeNumber");
 
-		String sql = "insert into personlist(id,name,email,birthday,address,phoneNumber,battery,site,homeNumber) values('"
-				+ id + "','" + name + "','" + email + "','" + birthday + "','" + address + "','" + phoneNumber + "','"
-				+ group + "','" + site + "','" + homeNumber + "')";
+		String searchSql = "SELECT * FROM `personlist`";
 
 		sql_data db = new sql_data();
+
+		ResultSet rs = db.executeQuery(searchSql);
+		int id = 1;
+		try {
+			rs.last();
+			id = rs.getInt("id");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		id = id + 1;
+		
+		String sql = "insert into personlist(id,name,email,birthday,address,phoneNumber,battery,site,homeNumber) values('"
+				+ id + "','" + name + "','" + email + "','" + birthday + "','" + address + "','" + phoneNumber + "','"
+				+ battery + "','" + site + "','" + homeNumber + "')";
+
 		db.executeInsert(sql);
 
 	}

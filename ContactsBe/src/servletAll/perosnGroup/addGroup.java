@@ -56,12 +56,13 @@ public class addGroup extends HttpServlet {
 
 		String text = request.getParameter("text");
 		String value = request.getParameter("value");
+		System.out.println(value);
 		String searchSql = "SELECT * FROM `grouplist`";
 		String insertSql = "insert into grouplist(text,value) values('" + text + "','" + value + "')";
 
 		sql_data db = new sql_data();
 		int flag = judge(searchSql, value);
-		// System.out.println(text);
+		 System.out.println(flag);
 		if (text == "" || value == "" || flag == 1) {
 			System.out.println("没有插入数据");
 			return;
@@ -80,8 +81,10 @@ public class addGroup extends HttpServlet {
 		try {
 			while (rs.next()) {
 				String valueSql = rs.getString("value");
-				if (value == valueSql) {
+				System.out.println(valueSql);
+				if (value.equals(valueSql)) {
 					flag = 1;
+					return flag;
 				} else {
 					continue;
 				}

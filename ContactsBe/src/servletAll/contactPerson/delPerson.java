@@ -19,6 +19,9 @@ import servletAll.common.*;
  */
 @WebServlet("/delPerson")
 public class delPerson extends HttpServlet {
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -27,6 +30,12 @@ public class delPerson extends HttpServlet {
 	public delPerson() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doPost(req, resp);
 	}
 
 	/**
@@ -46,7 +55,7 @@ public class delPerson extends HttpServlet {
 		// 允许该域发起跨域请求
 		response.setHeader("Access-Control-Allow-Origin", "*");// *允许任何域
 		// 允许的外域请求方式
-		response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE");
+		response.setHeader("Access-Control-Allow-Methods", "POST, GET");
 		// 在999999秒内，不需要再发送预检验请求，可以缓存该结果
 		response.setHeader("Access-Control-Max-Age", "999999");
 		// 允许跨域请求包含某请求头,x-requested-with请求头为异步请求
@@ -57,7 +66,7 @@ public class delPerson extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 
 		String name = request.getParameter("name");
-		// System.out.println(name);
+		System.out.println(name);
 		String sql = "delete from personlist where name='" + name + "'";
 		sql_data db = new sql_data();
 		db.executeDelete(sql);
