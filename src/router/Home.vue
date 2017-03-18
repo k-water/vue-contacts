@@ -206,17 +206,33 @@
       //添加新的数据
       async addPerson() {
         this.dialogVisible = false
-        this.currentForm = this.form
-        this.currentForm = Object.assign({}, this.currentForm, { id: this.contacts.length + 1 })
-        this.$nextTick(() => {
-          this.$store.dispatch('ADD_PERSON', this.currentForm)
-        })
-        // 增加分组
-        let params = {
-          text: this.currentForm['battery'],
-          value: this.currentForm['battery']
+        this.currentForm = this.initItemForUpdate(this.form)
+        let flag = 0
+        for(var i = 0, len = this.contacts.length; i < len; i++) {
+          if(this.contacts[i]['name'] === this.currentForm['name']) {
+            flag = 1
+            break
+          } else {
+            continue
+          }
         }
-        await this.$store.dispatch('ADD_GROUP', params)
+        
+        if(!flag) {
+          this.$nextTick(() => {
+            this.$store.dispatch('ADD_PERSON', this.currentForm)
+          })
+          // 增加分组
+          let params = {
+            text: this.currentForm['battery'],
+            value: this.currentForm['battery']
+          }
+          await this.$store.dispatch('ADD_GROUP', params)
+        } else {
+          this.$alert('您添加的联系人已经存在，请重新确认。', '提示', {
+            confirmButtonText: '确定',
+            type: 'warning'
+          })
+        }
       },
       // 删除一行数据
       delPerson(index, row) {
@@ -319,6 +335,9 @@
       label {
         padding-left: 25px !important;
         padding-right: 0px !important;
+      }
+      .el-form-item__error {
+        left: 15% !important;
       }
     }
     .pos {

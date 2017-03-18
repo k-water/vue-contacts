@@ -15,7 +15,7 @@ const getters = {
 
 const actions = {
   GET_GROUP({ commit }) {
-    Vue.http.get('http://119.29.151.195:8080/ContactsBe/getGroup').then(response => {
+    Vue.http.get('http://localhost:8080/ContactsBe/getGroup').then(response => {
       commit(types.GET_GROUP, { list: JSON.parse(response.body) })
     }, error => {
       return console.log(error)
@@ -23,14 +23,14 @@ const actions = {
   },
   ADD_GROUP({ commit }, params) {
     commit(types.ADD_GROUP, params)
-    Vue.http.post('http://119.29.151.195:8080/ContactsBe/addGroup', params).then(response => {
+    Vue.http.post('http://localhost:8080/ContactsBe/addGroup', params).then(response => {
       console.log('addGroup status is: ' + response.status)
     }, error => {
       return console.log(error)
     })
   },
   DEL_GROUP({ commit }, group, index) {
-    Vue.http.post('http://119.29.151.195:8080/ContactsBe/delGroup', group).then(response => {
+    Vue.http.post('http://localhost:8080/ContactsBe/delGroup', group).then(response => {
       console.log('delGroup status is: ' + response.status)
     }, error => {
       return console.log(error)

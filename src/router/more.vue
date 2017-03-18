@@ -20,7 +20,7 @@
     <el-col :span="18" :offset="1" v-show="currentIndex === 0" class="warp">
       <form name="uploadForm" method="POST" 
         enctype="MULTIPART/FORM-DATA" 
-        action="http://119.29.151.195:8080/ContactsBe/Upload"
+        action="http://localhost:8080/ContactsBe/Upload"
         target="post" class="upload">
 
         <!--隐藏input file-->
@@ -51,7 +51,7 @@
     
     <!--下载-->
     <el-col :span="18" :offset="2" v-show="aIndex === 1" class="download">
-      <a href="http://119.29.151.195:8080/ContactsBe/POIoutTemplate">
+      <a href="http://localhost:8080/ContactsBe/POIoutTemplate">
         <el-button type="success" size="large">
           导出<i class="el-icon-edit el-icon--right"></i>
 
