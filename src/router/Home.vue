@@ -85,37 +85,37 @@
         <el-form :model="form" :rules="rules" ref="from" :label-position="labelPosition"
         label-width="100px" class="add-form">
           <el-form-item label="姓名" required>
-            <el-input v-model="form.name" auto-complete="off">
+            <el-input v-model="form.name" auto-complete="off" placeholder="请输入该联系人的姓名">
             </el-input>
           </el-form-item>
           <el-form-item label="电子邮箱" prop="email">
-            <el-input v-model="form.email" auto-complete="off">
+            <el-input v-model="form.email" auto-complete="off" placeholder="请输入该联系人的邮箱">
             </el-input>
           </el-form-item>
           <el-form-item label="手机号码" prop="phoneNumber">
-            <el-input v-model="form.phoneNumber" auto-complete="off">
+            <el-input v-model="form.phoneNumber" auto-complete="off" placeholder="请输入该联系人的手机号码">
             </el-input>
           </el-form-item>
           <el-form-item label="家庭电话" prop="homeNumber" required>
-            <el-input v-model.number="form.homeNumber" auto-complete="off">
+            <el-input v-model.number="form.homeNumber" auto-complete="off" placeholder="选填项">
             </el-input>
           </el-form-item>
           <el-form-item label="生日" prop="birthday" required>
             <el-input type="date" format="yyyy-MM-dd" placeholder="选择日期" v-model="form.birthday">
             </el-input>
           </el-form-item>
-          <el-form-item label="个人主页" prop="site">
-            <el-input v-model="form.site" autocomplete="off">
+          <el-form-item label="个人主页" prop="site" required>
+            <el-input v-model="form.site" autocomplete="off"  placeholder="选填项">
             </el-input>
           </el-form-item>
           <el-form-item>
           </el-form-item>
           <el-form-item label="分组" prop="battery" required>
-            <el-input v-model="form.battery" placeholder="请填写分组">
+            <el-input v-model="form.battery" placeholder="选填项">
             </el-input>
           </el-form-item>
           <el-form-item label="地址" prop="address" required>
-            <el-input type="textarea" v-model="form.address" style="width: 70%;" auto-complete="off">
+            <el-input type="textarea" v-model="form.address" style="width: 70%;" auto-complete="off" placeholder="请输入地址">
             </el-input>
           </el-form-item>
         </el-form>
@@ -166,13 +166,10 @@
         rules: {
           email: [
             { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-            { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur, change' }
+            { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
           ],
           phoneNumber: [
             { required: true, message: '请填写手机号码', trigger: 'blur' },
-          ],
-          site: [
-            { required: true, message: '请输入一个网址', trigger: 'blur' }
           ]
         }
       }
@@ -207,6 +204,16 @@
       async addPerson() {
         this.dialogVisible = false
         this.currentForm = this.initItemForUpdate(this.form)
+        for(let val in this.currentForm) {
+          
+          if(this.currentForm['site'] === '') {
+            this.currentForm['site'] = 'http://www.scau.edn.cn'
+          }
+
+          if(this.currentForm['battery'] === '') {
+            this.currentForm['battery'] = '未分组'
+          }
+        }
         let flag = 0
         for(var i = 0, len = this.contacts.length; i < len; i++) {
           if(this.contacts[i]['name'] === this.currentForm['name']) {
@@ -218,15 +225,42 @@
         }
         
         if(!flag) {
-          this.$nextTick(() => {
-            this.$store.dispatch('ADD_PERSON', this.currentForm)
-          })
-          // 增加分组
-          let params = {
-            text: this.currentForm['battery'],
-            value: this.currentForm['battery']
+          if(this.currentForm['name'] === '') {
+            this.$alert('联系人的姓名不能为空，请重新输入', '提示', {
+              confirmButtonText: '确定',
+              type: 'warning'
+            })
+          } else if(this.currentForm['email'] === '') {
+            this.$alert('联系人的邮箱不能为空，请重新输入', '提示', {
+              confirmButtonText: '确定',
+              type: 'warning'
+            })
+          } else if(this.currentForm['phoneNumber'] === '') {
+            this.$alert('联系人的手机号码不能为空，请重新输入', '提示', {
+              confirmButtonText: '确定',
+              type: 'warning'
+            })
+          } else if(this.currentForm['birthday'] === '') {
+            this.$alert('联系人的生日不能为空，请重新输入', '提示', {
+              confirmButtonText: '确定',
+              type: 'warning'
+            })
+          } else if(this.currentForm['address'] === '') {
+            this.$alert('联系人的地址不能为空，请重新输入', '提示', {
+              confirmButtonText: '确定',
+              type: 'warning'
+            })
+          } else {
+             this.$nextTick(() => {
+              this.$store.dispatch('ADD_PERSON', this.currentForm)
+            })
+            // 增加分组
+            let params = {
+              text: this.currentForm['battery'],
+              value: this.currentForm['battery']
+            }
+            await this.$store.dispatch('ADD_GROUP', params)
           }
-          await this.$store.dispatch('ADD_GROUP', params)
         } else {
           this.$alert('您添加的联系人已经存在，请重新确认。', '提示', {
             confirmButtonText: '确定',
