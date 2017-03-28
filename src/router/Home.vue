@@ -105,7 +105,7 @@
             </el-input>
           </el-form-item>
           <el-form-item label="个人主页" prop="site" required>
-            <el-input v-model="form.site" autocomplete="off"  placeholder="选填项">
+            <el-input v-model="form.site" auto-complete="off"  placeholder="选填项">
             </el-input>
           </el-form-item>
           <el-form-item>
@@ -129,7 +129,7 @@
           <el-button type="primary" @click="addPerson" v-if="sure">
             确 定
           </el-button>
-          <el-button type="warning" @click="changePerson" v-else>
+          <el-button type="warning" @click="updatePerson" v-else>
             修 改
           </el-button>
         </span>
@@ -153,6 +153,7 @@
         currentIndex: '',
         filtersKey: '',
         currentDate: new Date(),
+        tempObj: {},
         form: {
           name: '',
           email: '',
@@ -203,7 +204,7 @@
       //添加新的数据
       async addPerson() {
         this.dialogVisible = false
-        this.currentForm = this.initItemForUpdate(this.form)
+        this.currentForm = this.deepCopy(this.form)
         for(let val in this.currentForm) {
           
           if(this.currentForm['site'] === '') {
@@ -294,39 +295,35 @@
       editPerson(index, row) {
         this.sure = false
         this.dialogVisible = true
-        this.form = this.initItemForUpdate(row)
+        this.form = this.deepCopy(row)
+        this.tempObj = this.deepCopy(row)
         this.currentIndex = index
       },
 
       // 修改一行数据
-      changePerson() {
+      updatePerson() {
         for (let k = 0; k < this.contacts.length; k++) {
           if (typeof this.contacts[k]['index'] === 'undefined') {
             this.$set(this.contacts[k], 'index', k)
           }
         }
-        let tmpContact = {}
         for (let i = 0; i < this.contacts.length; i++) {
           // 根据主键查找要修改的数据，然后将this.form数据更新到this.contacts[i]
           if (this.contacts[i]['index'] === this.currentIndex) {
-
             for (let j in this.form) {
               this.contacts[i][j] = this.form[j]
             }
-            tmpContact = Object.assign({}, this.contacts[i])
             break;
           }
         }
-        
-        this.$store.dispatch('UPDATE_PERSON', tmpContact)
+        this.$store.dispatch('UPDATE_PERSON', this.form)
        
         this.dialogVisible = false
         this.form = {}
       },
 
       // 对象深拷贝
-      // 卧槽 卡了我十天半个月 真是深奥
-      initItemForUpdate(p, c) {
+      deepCopy(p, c) {
         c = c || {};
         for (var i in p) {
           // 属性i是否为p对象的自有属性
@@ -337,7 +334,7 @@
               // 如果p[i]是普通对象，则创建一个新对象
               c[i] = Array.isArray(p[i]) ? [] : {};
               // 递归拷贝复杂类型的属性
-              this.initItemForUpdate(p[i], c[i]);
+              this.deepCopy(p[i], c[i]);
             } else {
               // 属性是基础类型时，直接拷贝
               c[i] = p[i];
