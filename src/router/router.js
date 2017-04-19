@@ -11,5 +11,8 @@ module.exports = {
   }, {
     path: '/more',
     component: require('../components/More.vue')
+  }, {
+    path: '/register',
+    component: require('../components/Register.vue')
   }]
 }
