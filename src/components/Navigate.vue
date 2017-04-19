@@ -1,7 +1,7 @@
 <template>
   <div id="navigate">
       <el-menu router default-active="1" class="el-menu-demo" mode="horizontal" theme="dark">
-        <el-menu-item index="1" :route="{path: '/'}">
+        <el-menu-item index="1" :route="{path: '/home'}">
           <i class="el-icon-message">
           </i>
           Contacts
@@ -34,6 +34,9 @@
   }
 </script>
 <style lang="scss">
+  #navigate {
+    padding-bottom: 30px;
+  }
   .sider-left {
     padding: 30px 10px 0 30px;
     .el-menu {

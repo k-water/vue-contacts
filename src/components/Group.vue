@@ -1,5 +1,7 @@
 <template>
   <div id="group">
+    <Headers></Headers>
+    <Navigate></Navigate>
     <!--搜索框-->
     <el-col :span="13" class="searchPos">
       <div class="grid-content bg-purple-light">
@@ -10,7 +12,7 @@
       </div>
     </el-col>
 
-    <el-col :span="4">
+    <el-col :span="4" class="side-group">
       <ul class="ul-menu">
         <li class="ul-menu-item" v-for="(item, index) in getItems" @click="init(item.value)">
           {{item.value}}
@@ -25,7 +27,7 @@
       </ul>
     </el-col>
     <!-- 排序表格 -->
-    <el-col :span="19" :offset="1">
+    <el-col :span="18" :offset="1">
       <el-table :data="groupData" border style="width: 100%" :default-sort="{prop: 'date', order: 'descending'}"
                 highlight-current-row @current-change="handleCurrentChange">
         <el-table-column prop="name" label="姓名" sortable width="150">
@@ -81,6 +83,10 @@
           battery: ''
         }
       }
+    },
+    components: {
+      Headers: require('../components/Headers.vue'),
+      Navigate: require('../components/Navigate.vue')
     },
     computed: {
       ...mapGetters({
@@ -197,9 +203,11 @@
 </script>
 <style lang="scss">
   #group {
-    padding: 30px 30px 0 20px;
+    // padding: 30px 30px 0 20px;
   }
-  
+  .side-group {
+    padding-left: 30px;
+  }
   ul {
     display: block;
     list-style: none;

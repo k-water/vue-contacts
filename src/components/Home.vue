@@ -1,5 +1,7 @@
   <template>
     <div id="home">
+      <Headers></Headers>
+      <Navigate></Navigate>
       <!--搜索框-->
       <el-col :span="13" class="searchPos">
         <div class="grid-content bg-purple-light">
@@ -21,7 +23,7 @@
       </el-col>
 
       <!--侧栏图片-->
-      <el-col :span="4" v-for="(o, index) in 1" :offset="index > 0 ? 1 : 0">
+      <el-col :span="4" v-for="(o, index) in 1" :offset="index > 0 ? 1 : 0" class="side-img">
         <el-card :body-style="{ padding: '0px' }">
           <img src="https://oc1gyfe6q.qnssl.com/XqjPCz.jpg?raw=true" class="image">
           <div style="padding: 14px;">
@@ -137,6 +139,8 @@
     </div>
   </template>
   <script>
+    import Headers from '../components/Headers.vue'
+    import Navigate from '../components/Navigate.vue'
     import {mapActions,mapGetters} from 'vuex'
     export default {
     name: 'home',
@@ -174,6 +178,10 @@
           ]
         }
       }
+    },
+    components: {
+      Headers,
+      Navigate
     },
     computed: {
       ...mapGetters({
@@ -355,9 +363,21 @@
   }
   </script>
   <style lang="scss">
-    #home {
-      padding: 30px 30px 0 20px;
+  // common
+   .pos {
+      position: absolute;
+      top: 0;
+      right: 0;
     }
+    .searchPos {
+      position: absolute;
+      top: 0;
+      right: 20.833333%
+    }
+    .side-img {
+      padding-left: 30px;
+    }
+    #home {
     .add-form {
       display: flex;
       justify-content: center;
@@ -370,16 +390,6 @@
       .el-form-item__error {
         left: 15% !important;
       }
-    }
-    .pos {
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
-    .searchPos {
-      position: absolute;
-      top: 0;
-      right: 20.833333%
     }
     .time {
       font-size: 13px;
@@ -410,4 +420,5 @@
     .clearfix:after {
         clear: both
     }
+  }
   </style>

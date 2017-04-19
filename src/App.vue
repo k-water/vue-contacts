@@ -1,12 +1,6 @@
 <template>
   <div id="app">
-    <Headers></Headers>
-    <Navigate></Navigate>
-    <!--路由出口-->
-    <router-view
-        keep-alive
-        transition="fade"
-        transition-mode='out-in'></router-view>
+    <router-view keep-alive transition="fade" transition-mode='out-in'></router-view>
   </div>
 </template>
 
@@ -35,7 +29,9 @@
     margin: 0;
     padding: 0;
   }
-  
+  #app {
+    height: 100%;
+  }
   body {
     background: #fff;
   }
