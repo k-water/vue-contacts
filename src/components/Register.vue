@@ -15,11 +15,11 @@
             <el-form-item label="账号" prop="name">
               <el-input v-model="formRegister.name"></el-input>
             </el-form-item>
-            <el-form-item label="密码" prop="password">
-              <el-input v-model="formRegister.password"></el-input>
+            <el-form-item label="密码" prop="password" >
+              <el-input v-model="formRegister.password" type="password"></el-input>
             </el-form-item>
-            <el-form-item label="确认密码" prop="checkPassword">
-              <el-input v-model="formRegister.checkPassword"></el-input>
+            <el-form-item label="确认密码" prop="checkPassword" >
+              <el-input v-model="formRegister.checkPassword" type="password"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="addUser">立即注册</el-button>
@@ -79,7 +79,33 @@
       }
     },
     methods: {
-      
+      addUser() {
+        let user = this.formRegister
+        let formData = {
+          name: user.name,
+          password: user.password
+        }
+
+        // form valid
+        this.$refs['formRegister'].validate(valid => {
+          if(valid) {
+            this.$http.post('/api/register', formData).then(res => {
+              console.log(res.data)
+              if(res.data.error) {
+                this.$message.error(res.data.error)
+                return false
+              }else {
+                this.$router.push('/login')
+              }
+            }).catch(err => {
+              this.$message.error(`${err.message}`)
+            })
+          }else {
+            this.$message.error('表单验证失败')
+            return false
+          }
+        })
+      }
     }
   }
 </script>

@@ -7,3 +7,7 @@ export const UPDATE_PERSON = 'UPDATE_PERSON'
 export const GET_GROUP = 'GET_GROUP'
 export const ADD_GROUP = 'ADD_GROUP'
 export const DEL_GROUP = 'DEL_GROUP'
+
+export const LOGIN = 'LOGIN'
+export const LOGINOUT = 'LOGINOUT'
+export const DELSESSION = 'DELSESSION'

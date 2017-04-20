@@ -39,6 +39,8 @@
   
 </template>
 <script>
+
+  import { mapActions } from 'vuex'
   export default {
     data() {
       let checkUserName = (rule,value,cb)=>{
@@ -85,8 +87,33 @@
       }
     },
     methods: {
+      ...mapActions(['userLogin']),
       login() {
-        this.$router.push('/home')
+        let user = this.formLogin
+        let formData = {
+          name: user.name,
+          password: user.password
+        }
+        this.$refs['formLogin'].validate(valid => {
+          if(valid) {
+            this.$http.post('/api/login',formData).then(res => {
+              console.dir(res.data)
+              if(res.data.success) {
+                this.userLogin(res.data)
+                this.$message.success(`${res.data.message}`)
+                this.$router.push('/')
+              } else {
+                this.$message.error(`${res.data.message}`)
+                return false
+              }
+            }).catch(err => {
+              this.$message.error(`${err.message}`, 'ERROR!')
+            })
+          }else {
+            this.$message.error('表单验证失败')
+            return false
+          }
+        })
       },
       // 表单重置
       resetForm(){
