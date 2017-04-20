@@ -17,10 +17,10 @@
             <el-input v-model="formLogin.name" placeholder="请输入用户名"></el-input>
           </el-form-item>
           <el-form-item label="密码" type="password" prop="password">
-            <el-input v-model="formLogin.password" placeholder="请输入密码"></el-input>
+            <el-input v-model="formLogin.password" placeholder="请输入密码" type="password"></el-input>
           </el-form-item>
           <el-form-item label="确认密码" type="password" prop="checkPassword">
-            <el-input v-model="formLogin.checkPassword" placeholder="请再次输入密码"></el-input>
+            <el-input v-model="formLogin.checkPassword" placeholder="请再次输入密码" type="password"></el-input>
           </el-form-item>
           <el-form-item>
               <el-button type="primary" @click="login">登录</el-button>
@@ -49,7 +49,6 @@
         }else{
           cb(); // 将判断传递给后面
         }
-
       }
       let checkPassword = (rule,value,cb)=>{
         if(!value){
@@ -88,32 +87,37 @@
     },
     methods: {
       ...mapActions(['userLogin']),
-      login() {
-        let user = this.formLogin
+      login(){
+        let user = this.formLogin;
+        // 传给后端的数据
         let formData = {
           name: user.name,
           password: user.password
-        }
-        this.$refs['formLogin'].validate(valid => {
-          if(valid) {
+        };
+        // 表单验证
+        this.$refs['formLogin'].validate((valid) => {
+          if (valid) {
+            // 通过验证之后才请求登录接口
             this.$http.post('/api/login',formData).then(res => {
               console.dir(res.data)
-              if(res.data.success) {
-                this.userLogin(res.data)
+              if (res.data.success) {
+                this.userLogin(res.data);
                 this.$message.success(`${res.data.message}`)
-                this.$router.push('/')
-              } else {
-                this.$message.error(`${res.data.message}`)
-                return false
+                // 登录成功 跳转至首页
+                this.$router.push({path: '/'}) 
+              }else{
+                this.$message.error(`${res.data.message}`);
+                return false;
               }
-            }).catch(err => {
-              this.$message.error(`${err.message}`, 'ERROR!')
             })
-          }else {
-            this.$message.error('表单验证失败')
-            return false
+            .catch(err => {
+                this.$message.error(`${err.message}`, 'ERROR!')
+            })
+          } else {
+            this.$message.error('表单验证失败!')
+            return false;
           }
-        })
+        });
       },
       // 表单重置
       resetForm(){

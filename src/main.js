@@ -3,19 +3,19 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
+
 import App from './App'
 import store from './store'
-import Element from 'element-ui'
-import VueRouter from 'vue-router'
-import VueResource from 'vue-resource'
+// import axios from './utils/interceptor'
+import axios from 'axios'
+import router from './router/index'
+Vue.prototype.$http = axios
 
+import Element from 'element-ui'
 Vue.use(Vuex)
 Vue.use(Element)
-Vue.use(VueRouter)
-Vue.use(VueResource)
-Vue.http.options.emulateJSON = true;
 
-const router = new VueRouter(require('./router/router'))
+Vue.config.productionTip = false
 
 new Vue({
   el: '#app',
