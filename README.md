@@ -21,7 +21,37 @@
 * ElementUI
 * Node
 * Express
+* MongoDB
 
+### 目录结构
+<pre>
+|
+├── README.md           
+├── build               // 构建服务和webpack配置
+├── config              // 项目不同环境的配置
+├── dist                // 项目build目录
+├── index.html          // 项目入口文件
+├── package.json
+├── server              // 登录注册后台目录
+|   ├── controllers     // 控制器
+|   ├── db              // 数据库配置
+|   ├── middlewares     // 中间件
+|   ├── models          // Collections models
+|   ├── router          // 后台路由
+|
+├── src                 // 生产目录
+│   ├── assets          // css js 和图片资源
+│   ├── components      // 各种组件
+│   ├── router          // 前端路由
+│   ├── store           // vuex状态管理器
+│   ├── utils           // axios拦截器
+|   ├── App.vue         // 主组件
+│   └── main.js         // Webpack 预编译入口
+|
+├── static              // 其他静态资源 
+├── server.js           // 启动后台JS文件
+|
+</pre>
 ### 构建
 需要启动两个服务，一个前端，一个后台
 ``` bash
