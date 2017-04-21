@@ -22,7 +22,7 @@
     <el-col :span="18" :offset="1" v-show="currentIndex === 0" class="warp">
       <form name="uploadForm" method="POST" 
         enctype="MULTIPART/FORM-DATA" 
-        action="http://localhost:8080/ContactsBe/Upload"
+        action="http://119.29.151.195:8080/ContactsBe/Upload"
         target="post" class="upload">
 
         <!--隐藏input file-->
@@ -53,7 +53,7 @@
     
     <!--下载-->
     <el-col :span="18" :offset="2" v-show="aIndex === 1" class="download">
-      <a href="http://localhost:8080/ContactsBe/POIoutTemplate">
+      <a href="http://119.29.151.195:8080/ContactsBe/POIoutTemplate">
         <el-button type="success" size="large">
           导出<i class="el-icon-edit el-icon--right"></i>
 
@@ -91,7 +91,6 @@
         let reg = /^xls$/
         let pos = this.fileName.lastIndexOf('.')
         let suffix = this.fileName.substring(pos + 1)
-        console.log(suffix)
         if (this.fileName === '') {
           this.$alert('您还没有选择文件，请先选择需上传的文件', '提示', {
             confirmButtonText: '确定',

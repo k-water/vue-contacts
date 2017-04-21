@@ -90,7 +90,6 @@
         this.$refs['formRegister'].validate(valid => {
           if(valid) {
             this.$http.post('/api/register', formData).then(res => {
-              console.log(res.data)
               if(res.data.error) {
                 this.$message.error(res.data.error)
                 return false

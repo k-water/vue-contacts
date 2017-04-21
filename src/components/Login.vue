@@ -19,9 +19,6 @@
           <el-form-item label="密码" type="password" prop="password">
             <el-input v-model="formLogin.password" placeholder="请输入密码" type="password"></el-input>
           </el-form-item>
-          <el-form-item label="确认密码" type="password" prop="checkPassword">
-            <el-input v-model="formLogin.checkPassword" placeholder="请再次输入密码" type="password"></el-input>
-          </el-form-item>
           <el-form-item>
               <el-button type="primary" @click="login">登录</el-button>
               <el-button @click="resetForm">取消</el-button>
@@ -57,15 +54,6 @@
           cb();
          }
       }
-      let checkPasswordAgain = (rule,value,cb)=>{
-        if(!value){
-          return cb(new Error('再次输入密码不能为空!'))
-         }else if(value !== this.formLogin.password){
-          return cb(new Error('两次输入密码不一致!'));
-         }else{
-          cb();
-         }
-      }
       return {
         formLogin:{
           name: '',
@@ -78,9 +66,6 @@
           ],
           password:[
             {validator:checkPassword,trigger: 'blur'}
-          ],
-          checkPassword:[
-            {validator:checkPasswordAgain,trigger: 'blur'}
           ]
         }
       }
@@ -99,7 +84,6 @@
           if (valid) {
             // 通过验证之后才请求登录接口
             this.$http.post('/api/login',formData).then(res => {
-              console.dir(res.data)
               if (res.data.success) {
                 this.userLogin(res.data);
                 this.$message.success(`${res.data.message}`)
@@ -121,7 +105,6 @@
       },
       // 表单重置
       resetForm(){
-        console.log('session')
         this.$refs['formLogin'].resetFields();
       }
     }

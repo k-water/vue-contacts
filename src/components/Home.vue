@@ -285,6 +285,7 @@
           type: 'warning'
         }).then(() => {
           this.$store.dispatch('DEL_PERSON', row)
+          console.log(row)
           this.contacts.splice(index, 1)
           this.$message({
             type: 'success',

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as types from '../mutations-types'
+const qs = require('qs')
 Vue.use(Vuex)
 const state = {
   contacts: []
@@ -11,7 +12,6 @@ const getters = {
 }
 const _this = Vue.prototype
 const actions = {
-
   GET_PERSON({ commit }) {
     _this.$http.get('http://119.29.151.195:8080/ContactsBe/getPerson').then((res) => {
       commit(types.GET_PERSON, { contacts: res.data })
@@ -20,7 +20,7 @@ const actions = {
     })
   },
   FUZZY_QUERY({ commit }, fkey) {
-    _this.$http.post('http://119.29.151.195:8080/ContactsBe/SearchPerson', { key: fkey }).then(res => {
+    _this.http.post('http://119.29.151.195:8080/ContactsBe/SearchPerson', qs.stringify({ key: fkey })).then(res => {
       commit(types.GET_PERSON, { contacts: res.data })
     }, err => {
       return console.log(err)
@@ -28,21 +28,21 @@ const actions = {
   },
   async ADD_PERSON({ commit }, list) {
     await commit(types.ADD_PERSON, list)
-    await _this.$http.post('http://119.29.151.195:8080/ContactsBe/addPerson', list).then(response => {
+    await _this.$http.post('http://119.29.151.195:8080/ContactsBe/addPerson', qs.stringify(list)).then(response => {
       console.log('addPerson status is: ' + response.status)
     }, error => {
       console.log(error)
     })
   },
   DEL_PERSON({ commit }, person) {
-    _this.$http.post('http://119.29.151.195:8080/ContactsBe/delPerson', person).then(response => {
+    _this.$http.post('http://119.29.151.195:8080/ContactsBe/delPerson', qs.stringify(person)).then(response => {
       console.log('delPerson status is: ' + response.status)
     }, error => {
       console.log(error)
     })
   },
   UPDATE_PERSON({ commit }, person) {
-    _this.$http.post('http://119.29.151.195:8080/ContactsBe/updatePerson', person).then(response => {
+    _this.$http.post('http://119.29.151.195:8080/ContactsBe/updatePerson', qs.stringify(person)).then(response => {
       console.log('update status is: ' + response.status)
     }, error => {
       console.log(error)

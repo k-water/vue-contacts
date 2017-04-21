@@ -16,9 +16,6 @@ const router = new Router({
   }, {
     path: '/group',
     name: 'group',
-    meta: {
-      requireLogin: true
-    },
     component: require('../components/Group.vue')
   }, {
     path: '/login',
@@ -27,9 +24,6 @@ const router = new Router({
   }, {
     path: '/more',
     name: 'more',
-    meta: {
-      requireLogin: true
-    },
     component: require('../components/More.vue')
   }, {
     path: '/register',
