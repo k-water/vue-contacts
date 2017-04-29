@@ -43,7 +43,7 @@
       }
     },
     beforeCreate() {
-      this.$http.get('/api').then(res => {
+      this.$http.get('http://localhost:3001/api').then(res => {
         if(res.data.error) {
           this.$message.error(res.data.error)
           this.user.name = null
@@ -66,7 +66,7 @@
       loginOut() {
         this.userLoginOut()
         this.user.name = null
-        this.$http.get('/api/user').then(res => {
+        this.$http.get('http://localhost:3001/api/user').then(res => {
 
           if(res.data.message) {
             this.$message.success(res.data.message)

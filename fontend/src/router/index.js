@@ -96,54 +96,54 @@ const router = new Router({
 // 方案一
 // 在里面请求后端一个获取session的api
 
-router.beforeEach((to, from, next) => {
-  if (to.meta.requireLogin) {
-    // 向后端请求获取session的api
-    axios.get('/api')
-      .then(res => {
-        if (res.data.error) {
-          next({
-            // 如果session失效，则跳转至登录页
-            path: '/login',
-            // 跳转后将跳转前的url赋值给参数redirect
-            query: {
-              redirect: to.fullPath
-            }
-          })
-        } else {
-          next();
-        }
-      })
-      .catch(err => {
-        console.dir(err);
-      })
-  } else {
-    next();
-  }
-})
+// router.beforeEach((to, from, next) => {
+//   if (to.meta.requireLogin) {
+//     // 向后端请求获取session的api
+//     axios.get('http://localhost:3001/api')
+//       .then(res => {
+//         if (res.data.error) {
+//           next({
+//             // 如果session失效，则跳转至登录页
+//             path: '/login',
+//             // 跳转后将跳转前的url赋值给参数redirect
+//             query: {
+//               redirect: to.fullPath
+//             }
+//           })
+//         } else {
+//           next();
+//         }
+//       })
+//       .catch(err => {
+//         console.dir(err);
+//       })
+//   } else {
+//     next();
+//   }
+// })
 
 // 方案二：
 // 根据localStorage是否存在为判断依据，
 // 因为每次进入需要登录状态的页面，(参见home.vue以及store/mutations.js)
 // 已经对获取session的api进行了访问，因此方案一增加了请求次数
-// router.beforeEach((to, from, next) => {
-//     let session = localStorage.getItem('session')
-//     if (to.meta.requireLogin) {
-//         if (session) {
-//             next();
-//         } else {
-//             next({
-//                 path: '/login',
-//                 query: {
-//                     redirect: to.fullPath
-//                 }
-//             })
-//         }
+router.beforeEach((to, from, next) => {
+  let session = localStorage.getItem('session')
+  if (to.meta.requireLogin) {
+    if (session) {
+      next();
+    } else {
+      next({
+        path: '/login',
+        query: {
+          redirect: to.fullPath
+        }
+      })
+    }
 
-//     } else {
-//         next();
-//     }
-// })
+  } else {
+    next();
+  }
+})
 
 
 export default router;

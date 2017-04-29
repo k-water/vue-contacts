@@ -32,6 +32,7 @@
   </div>
 </template>
 <script>
+  const qs = require('qs')
   export default {
     data(){
       let checkUserName = (rule,value,cb)=>{
@@ -89,7 +90,7 @@
         // form valid
         this.$refs['formRegister'].validate(valid => {
           if(valid) {
-            this.$http.post('/api/register', formData).then(res => {
+            this.$http.post('http://localhost:3001/api/register', qs.stringify(formData)).then(res => {
               if(res.data.error) {
                 this.$message.error(res.data.error)
                 return false

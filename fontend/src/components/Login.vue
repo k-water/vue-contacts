@@ -37,6 +37,7 @@
 </template>
 <script>
 
+  const qs = require('qs')
   import { mapActions } from 'vuex'
   export default {
     data() {
@@ -83,12 +84,12 @@
         this.$refs['formLogin'].validate((valid) => {
           if (valid) {
             // 通过验证之后才请求登录接口
-            this.$http.post('/api/login',formData).then(res => {
+            this.$http.post('http://localhost:3001/api/login',qs.stringify(formData)).then(res => {
               if (res.data.success) {
                 this.userLogin(res.data);
                 this.$message.success(`${res.data.message}`)
                 // 登录成功 跳转至首页
-                this.$router.push({path: '/'}) 
+                this.$router.push({name: 'home'}) 
               }else{
                 this.$message.error(`${res.data.message}`);
                 return false;
