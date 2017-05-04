@@ -16,17 +16,6 @@
           </i>
           更多
         </el-menu-item>
-        <el-menu-item index="" :style="{float: 'right'}">
-          <router-link to="/login" v-show="!user.name">登录</router-link>
-          <el-dropdown @command="loginOut">
-            <span :style="{color:'#FFF'}" v-show="user.name">
-            {{user.name}}<i class="el-icon-caret-bottom el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command>登出</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </el-menu-item>
       </el-menu>
   </div>
 </template>
@@ -36,47 +25,17 @@
     name: 'navigate',
     data() {
       return {
-        activeIndex:'1',
         user: {
-          name: ''
+          name: null
         }
       }
     },
-    beforeCreate() {
-      this.$http.get('http://localhost:3001/api').then(res => {
-        if(res.data.error) {
-          this.$message.error(res.data.error)
-          this.user.name = null
-          return false
-        } else {
-          let user = localStorage.getItem('user')
-          if(user) {
-            this.user.name = user
-          }
-        }
-      }).catch(err => {
-        this.$message.error(`${err.message}`)
-      })
-    },
+    
     mounted () {
       
     },
     methods: {
-      ...mapActions(['userLoginOut']),
-      loginOut() {
-        this.userLoginOut()
-        this.user.name = null
-        this.$http.get('http://localhost:3001/api/user').then(res => {
-
-          if(res.data.message) {
-            this.$message.success(res.data.message)
-            this.$router.push({name: 'login'})
-            return false
-          }
-        }).catch(err => {
-          this.$message.error(`${err.message}`)
-        })
-      }
+      
     }
   }
 </script>

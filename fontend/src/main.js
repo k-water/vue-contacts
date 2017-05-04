@@ -6,10 +6,10 @@ import Vuex from 'vuex'
 
 import App from './App'
 import store from './store'
-// import axios from './utils/interceptor'
-import axios from 'axios'
 import router from './router/index'
-Vue.prototype.$http = axios
+// import axios from './util/interceptor.js'
+import axios from 'axios'
+Vue.prototype.$http = axios;
 
 import Element from 'element-ui'
 Vue.use(Vuex)

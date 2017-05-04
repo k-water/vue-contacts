@@ -21,7 +21,16 @@
           </el-button>
         </div>
       </el-col>
-
+      <el-col :span="3" class="user">
+        <el-dropdown @command="loginOut" style="float: right; padding-right: 20px;color: #324157">
+          <el-button type="primary">
+            Hello,{{user.name}}<i class="el-icon-caret-bottom el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command>登出</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </el-col>
       <!--侧栏图片-->
       <el-col :span="4" v-for="(o, index) in 1" :offset="index > 0 ? 1 : 0" class="side-img">
         <el-card :body-style="{ padding: '0px' }">
@@ -158,6 +167,9 @@
         filtersKey: '',
         currentDate: new Date(),
         tempObj: {},
+        user: {
+          name: ''
+        },
         form: {
           name: '',
           email: '',
@@ -188,12 +200,48 @@
         contacts: 'allContacts'
       })
     },
+    beforeCreate(){
+      // 当主页刷新时，如果服务端设置的token
+      // 的时效到了的话，便会提示未登录
+      this.$http.get('http://localhost:3000/api/token')
+        .then(res => {
+          console.dir(res.data)
+          if (res.data.error) {
+            this.userLoginOut();
+            this.$message.error(res.data.error);
+            this.user.name = null;
+            return false;
+          }else{
+            let username = localStorage.getItem('username');
+            console.log(username)
+            if (username) {
+              this.user.name = username;
+              console.log(this.user.name)
+            }
+          }
+        })
+        .catch(err => {
+            this.$message.error(`${err.message}`)
+        })
+    },
     created() {
       this.$store.dispatch('GET_PERSON')
       this.$store.dispatch('GET_GROUP')
     },
     methods: {
+      ...mapActions(['userLoginOut']),
+      loginOut(){
+        this.userLoginOut();
+        this.user.name = null;
+        if (!this.$store.state.token) {
+            this.$router.push('/login')
+            this.$message.success('登出成功');
+        } else {
+            this.$message.success('登出失败');
+        }
+      },
       // 点击Add打开Dialog 并清空上一次的数据
+      ...mapActions(['userLoginOut']),
       openDialog() {
         this.dialogVisible = true
         this.sure = true
@@ -374,6 +422,13 @@
       position: absolute;
       top: 0;
       right: 20.833333%
+    }
+    .user {
+      position: absolute;
+      top: 71px;
+      right: 0;
+      height: 36px;
+      line-height: 36px;
     }
     .side-img {
       padding-left: 30px;

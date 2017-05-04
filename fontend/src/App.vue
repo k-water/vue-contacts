@@ -5,17 +5,12 @@
 </template>
 
 <script>
-  import Headers from './components/Headers'
-  import Navigate from './components/Navigate'
   export default {
     data() {
       return {
-
       }
     },
     components: {
-      Headers,
-      Navigate
     }
   }
 </script>

@@ -20,7 +20,7 @@ const actions = {
     })
   },
   FUZZY_QUERY({ commit }, fkey) {
-    _this.http.post('http://119.29.151.195:8080/ContactsBe/SearchPerson', qs.stringify({ key: fkey })).then(res => {
+    _this.$http.post('http://119.29.151.195:8080/ContactsBe/SearchPerson', qs.stringify({ key: fkey })).then(res => {
       commit(types.GET_PERSON, { contacts: res.data })
     }, err => {
       return console.log(err)
