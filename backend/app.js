@@ -7,13 +7,17 @@ const bodyParser = require('body-parser');
 
 const index = require('./routes/index');
 const users = require('./routes/users');
+const userpersons = require('./routes/userperson')
 
 const pkg = require('./package')
 const config = require('./db/dbconfig.js')
 const mongoose = require('mongoose')
 const usertoken = require('./routes/usertoken')
 
+mongoose.Promise = global.Promise
+mongoose.set('debug', true)
 const db = mongoose.connect(config.mongodb);
+
 db.connection.on("error", function(error) {
   console.log("数据库连接失败：" + error);
 });
@@ -37,15 +41,18 @@ app.all('*', function(req, res, next) {
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(logger('dev'))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(cookieParser())
+app.use(express.static(path.join(__dirname, 'public')))
 
-app.use('/', index);
-app.use('/users', users);
+app.use('/', index)
+
+// app.use('/users', users)
+
 app.use('/api/token', usertoken)
+app.use('/api/users', userpersons)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

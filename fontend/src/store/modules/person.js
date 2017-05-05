@@ -13,7 +13,7 @@ const getters = {
 const _this = Vue.prototype
 const actions = {
   GET_PERSON({ commit }) {
-    _this.$http.get('http://119.29.151.195:8080/ContactsBe/getPerson').then((res) => {
+    _this.$http.get('http://localhost:3000/api/users/getPerson').then((res) => {
       commit(types.GET_PERSON, { contacts: res.data })
     }, error => {
       console.log(error)
