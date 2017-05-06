@@ -35,8 +35,8 @@ const actions = {
     })
   },
   DEL_PERSON({ commit }, person) {
-    _this.$http.post('http://119.29.151.195:8080/ContactsBe/delPerson', qs.stringify(person)).then(response => {
-      console.log('delPerson status is: ' + response.status)
+    _this.$http.post('http://localhost:3000/api/users/delPerson', qs.stringify(person)).then(res => {
+      console.log(res.data.message)
     }, error => {
       console.log(error)
     })

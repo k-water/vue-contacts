@@ -205,7 +205,6 @@
       // 的时效到了的话，便会提示未登录
       this.$http.get('http://localhost:3000/api/token')
         .then(res => {
-          console.dir(res.data)
           if (res.data.error) {
             this.userLoginOut();
             this.$message.error(res.data.error);
@@ -213,10 +212,8 @@
             return false;
           }else{
             let username = localStorage.getItem('username');
-            console.log(username)
             if (username) {
               this.user.name = username;
-              console.log(this.user.name)
             }
           }
         })
@@ -333,7 +330,6 @@
           type: 'warning'
         }).then(() => {
           this.$store.dispatch('DEL_PERSON', row)
-          console.log(row)
           this.contacts.splice(index, 1)
           this.$message({
             type: 'success',

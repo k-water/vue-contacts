@@ -19,7 +19,25 @@ const GetPerson = (req, res) => {
     err => res.json(err)
   )
 }
-
+const DelPerson = (req, res) => {
+  let delUser = new Person(req.body)
+  Person.remove({
+    name: delUser.name
+  }).then(person => {
+    if (person) {
+      res.json({
+        message: `${delUser.name} was successfully deleted`
+      })
+    } else {
+      res.json({
+        error: 'deleted error!'
+      })
+    }
+  }).catch(err => {
+    return console.log(err)
+  })
+}
 module.exports = router => {
-  router.get('/getPerson', GetPerson)
+  router.get('/getPerson', GetPerson),
+    router.post('/delPerson', DelPerson)
 }
