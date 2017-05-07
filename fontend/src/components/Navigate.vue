@@ -30,10 +30,6 @@
         }
       }
     },
-    
-    mounted () {
-      
-    },
     methods: {
       
     }

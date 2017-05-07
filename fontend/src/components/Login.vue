@@ -13,10 +13,7 @@
             <el-input v-model="formLogin.name"></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="password">
-            <el-input v-model="formLogin.password"></el-input>
-          </el-form-item>
-          <el-form-item label="确认密码" prop="checkPassword">
-            <el-input v-model="formLogin.checkPassword"></el-input>
+            <el-input v-model="formLogin.password" type="password"></el-input>
           </el-form-item>
           <el-form-item>
               <el-button type="primary" @click="login">登录</el-button>
@@ -55,20 +52,10 @@
           cb();
          }
       }
-      let checkPasswordAgain = (rule,value,cb)=>{
-        if(!value){
-          return cb(new Error('再次输入密码不能为空!'))
-         }else if(value !== this.formLogin.password){
-          return cb(new Error('两次输入密码不一致!'));
-         }else{
-          cb();
-         }
-      }
       return{
         formLogin:{
           name: '',
           password: '',
-          checkPassword: ''
         },
         rules:{
           name:[
@@ -76,9 +63,6 @@
           ],
           password:[
             {validator:checkPassword,trigger: 'blur'}
-          ],
-          checkPassword:[
-            {validator:checkPasswordAgain,trigger: 'blur'}
           ]
         }
       }

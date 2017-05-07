@@ -151,6 +151,7 @@
     import Headers from '../components/Headers.vue'
     import Navigate from '../components/Navigate.vue'
     import {mapActions,mapGetters} from 'vuex'
+    const qs = require('qs')
     export default {
     name: 'home',
     data() {
@@ -259,15 +260,28 @@
         this.dialogVisible = false
         this.currentForm = this.deepCopy(this.form)
         for(let val in this.currentForm) {
-          
           if(this.currentForm['site'] === '') {
             this.currentForm['site'] = 'http://www.scau.edn.cn'
           }
-
           if(this.currentForm['battery'] === '') {
             this.currentForm['battery'] = '未分组'
           }
         }
+        this.$http.post('http://localhost:3000/api/users/addPerson', qs.stringify(this.currentForm)).then(res => {
+          if(!res.data.success) {
+            this.$alert(res.data.message, res.data.type, {
+              confirmButtonText: '确定',
+              type: 'warning'
+            })
+          } else {
+            this.$alert(res.data.message, res.data.type, {
+              confirmButtonText: '确定',
+              type: 'success'
+            })
+            this.$store.dispatch('ADD_PERSON',this.currentForm)
+          }
+        })
+        /*
         let flag = 0
         for(var i = 0, len = this.contacts.length; i < len; i++) {
           if(this.contacts[i]['name'] === this.currentForm['name']) {
@@ -321,7 +335,9 @@
             type: 'warning'
           })
         }
+        */
       },
+      
       // 删除一行数据
       delPerson(index, row) {
         this.$confirm('此操作将永久删除该联系人, 是否继续?', '提示', {

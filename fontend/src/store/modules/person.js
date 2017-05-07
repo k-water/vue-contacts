@@ -28,7 +28,7 @@ const actions = {
   },
   async ADD_PERSON({ commit }, list) {
     await commit(types.ADD_PERSON, list)
-    await _this.$http.post('http://119.29.151.195:8080/ContactsBe/addPerson', qs.stringify(list)).then(response => {
+    await _this.$http.post('http://localhost:3000/api/users/addPerson', qs.stringify(list)).then(response => {
       console.log('addPerson status is: ' + response.status)
     }, error => {
       console.log(error)
