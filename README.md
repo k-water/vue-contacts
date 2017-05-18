@@ -26,34 +26,41 @@
 ### 目录结构
 <pre>
 |
-├── README.md           
-├── build               // 构建服务和webpack配置
-├── config              // 项目不同环境的配置
-├── dist                // 项目build目录
-├── index.html          // 项目入口文件
-├── package.json
-├── server              // 登录注册后台目录
-|   ├── controllers     // 控制器
-|   ├── db              // 数据库配置
-|   ├── middlewares     // 中间件
-|   ├── models          // Collections models
-|   ├── router          // 后台路由
+|——fontend
+|  ├── README.md           
+|  ├── build               // 构建服务和webpack配置
+|  ├── config              // 项目不同环境的配置
+|  ├── dist                // 项目build目录
+|  ├── index.html          // 项目入口文件
+|  ├── package.json        // 依赖文件
+|  |
+|  ├── src                 // 生产目录
+|  │   ├── assets          // css js 和图片资源
+|  │   ├── components      // 各种组件
+|  │   ├── router          // 前端路由
+|  │   ├── store           // vuex状态管理器
+|  │   ├── utils           // axios拦截器
+|  |   ├── App.vue         // 主组件
+|  │   └── main.js         // Webpack 预编译入口
+|  |
+|  ├── static              // 其他静态资源 
 |
-├── src                 // 生产目录
-│   ├── assets          // css js 和图片资源
-│   ├── components      // 各种组件
-│   ├── router          // 前端路由
-│   ├── store           // vuex状态管理器
-│   ├── utils           // axios拦截器
-|   ├── App.vue         // 主组件
-│   └── main.js         // Webpack 预编译入口
-|
-├── static              // 其他静态资源 
-├── server.js           // 启动后台JS文件
+|——backend
+|  |—— bin                 // 项目配置
+|  |—— controlllers        // 控制器
+|  |—— db                  // 数据库配置
+|  |—— miidelewares        // 中间件
+|  |—— models              // mongodb schema
+|  |—— public              // 公共文件
+|  |—— routers             // 后台路由
+|  |—— views               // 模板引擎
+|  |—— app.js              // 入口
+|  |—— package.json        // 依赖
 |
 </pre>
 ### 构建
 需要启动两个服务，一个前端，一个后台
+#### 前端
 ``` bash
 # install dependencies
 npm install
@@ -65,10 +72,13 @@ npm run dev
 npm run build
 
 ```
-
+#### 后台
 ``` bash
-# server with node
-node server.js
+# install dependencies
+npm install
+
+# server in dev mode, with hot reload at localhost:12221
+npm start
 ```
 
 ### 最后
