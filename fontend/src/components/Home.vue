@@ -32,7 +32,7 @@
         </el-dropdown>
       </el-col>
       <!--侧栏图片-->
-      <el-col :span="4" v-for="(o, index) in 1" :offset="index > 0 ? 1 : 0" class="side-img">
+      <el-col :span="4" v-for="(o, index) in 1" :key="o" :offset="index > 0 ? 1 : 0" class="side-img">
         <el-card :body-style="{ padding: '0px' }">
           <img src="https://oc1gyfe6q.qnssl.com/XqjPCz.jpg?raw=true" class="image">
           <div style="padding: 14px;">

@@ -1,7 +1,9 @@
 <template>
-  <el-card class="box-card">
-    <el-row type="flex" justify="center">
-      <el-col :span="12">
+  <div id="register">
+    <div class="bg"></div>
+    <div class="wrap">
+      <header>Easy Contacts</header>
+      <div class="register-form">
         <el-form
          label-position="left" 
          label-width="80px" 
@@ -12,22 +14,23 @@
             <el-input v-model="formRegister.name"></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="password">
-            <el-input v-model="formRegister.password"></el-input>
+            <el-input v-model="formRegister.password" type="password"></el-input>
           </el-form-item>
           <el-form-item label="确认密码" prop="checkPassword">
-            <el-input v-model="formRegister.checkPassword"></el-input>
+            <el-input v-model="formRegister.checkPassword" type="password"></el-input>
           </el-form-item>
           <el-form-item>
               <el-button type="primary" @click="addUser">立即注册</el-button>
-              <el-button>取消</el-button>
+              <el-button @click="jump">取消</el-button>
             </el-form-item>
         </el-form>
-      </el-col>
-    </el-row>
-  </el-card>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script type="text/javascript">
+  const qs = require('qs')
   export default {
     data(){
       let checkUserName = (rule,value,cb)=>{
@@ -85,14 +88,16 @@
         // 表单验证
         this.$refs['formRegister'].validate((valid)=>{
           if(valid){
-            this.$http.post('http://localhost:3000/api/token/register',qs.stringify(formData))
+            this.$http.post('http://119.29.151.195:3000/api/token/register',qs.stringify(formData))
             .then(res => {
-              console.dir(res.data)
               if (res.data.message) {
                 this.$message.error(res.data.message);
                 return false;
               }else{
-                this.$router.push('/login')
+                this.$message.success('注册成功！')
+                setTimeout(() => {
+                  this.$router.push('/login')
+                },1500)
               }
             })
             .catch(err => {
@@ -103,10 +108,61 @@
             return false;
           }
         })
+      },
+      jump() {
+        this.$router.push({
+          name: 'login'
+        })
       }
     }
   }
 </script>
 
-<style lang="css">
+<style lang="scss">
+   html, body {
+    height: 100% !important;
+  }
+  #register {
+    .bg {
+      width: 100%;
+      height: 100%;
+      background: url(https://oc1gyfe6q.qnssl.com/17-5-18/51286320-file_1495096954560_177f8.jpg) no-repeat;
+      -webkit-filter: blur(1px); /* Chrome, Opera */
+      -moz-filter: blur(1px);
+      -ms-filter: blur(1px);    
+          filter: blur(1px);
+      background-size: 100% 100%;
+    }
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    min-height: 585px;
+    position: relative; 
+    header {
+      text-align: center;
+      font: 40px/150% 'Microsoft YaHei','Hiragino Sans GB',Arial,sans-serif;
+      color: #45484d;
+      width: 400px;
+      height: 60px;
+    }
+    .wrap {
+      width: 400px;
+      height: 300px;
+      background: rgba(197, 196, 231, 0.81);
+      border: 1px solid #ddd;
+      z-index: 999;
+      border-radius: 5px;
+      box-shadow: 1px 1px 1px 1px gainsboro;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      .register-form { 
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+      }
+    }
+  }
 </style>

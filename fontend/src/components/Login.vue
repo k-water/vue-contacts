@@ -1,9 +1,11 @@
 <template>
-  <el-card class="box-card">
-    <el-row type="flex" justify="center">
-      <el-col :span="12">
+  <div id="login">
+    <div class="bg"></div>
+    <div class="wrap">
+      <header>Easy Contacts</header>
+      <div class="form-login">
         <el-form 
-          label-position="left" 
+          label-position="right" 
           label-width="80px" 
           :model="formLogin"
           :rules="rules"
@@ -25,9 +27,9 @@
             </router-link>
           </el-form-item>
         </el-form>
-      </el-col>
-    </el-row>
-  </el-card>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script type="text/javascript">
@@ -56,6 +58,7 @@
         formLogin:{
           name: '',
           password: '',
+          checkPassword: ''
         },
         rules:{
           name:[
@@ -80,9 +83,8 @@
         this.$refs['formLogin'].validate((valid) => {
           if (valid) {
             // 通过验证之后才请求登录接口
-            this.$http.post('http://localhost:3000/api/token/login', qs.stringify(formData))
+            this.$http.post('http://119.29.151.195:3000/api/token/login', qs.stringify(formData))
                 .then(res => {
-                    console.dir(res.data)
                     if (res.data.success) {
                       this.userLogin(res.data);
                       this.$message.success(`${res.data.message}`)
@@ -104,8 +106,7 @@
       },
       // 表单重置
       resetForm(){
-        console.log('token')
-        this.$refs['formLogin'].resetFields();
+        this.$refs['formLogin'].resetFields()
       }
     }
   }
@@ -115,41 +116,45 @@
     height: 100% !important;
   }
   #login {
+    .bg {
+      width: 100%;
+      height: 100%;
+      background: url(https://oc1gyfe6q.qnssl.com/17-5-18/51286320-file_1495096954560_177f8.jpg) no-repeat;
+      -webkit-filter: blur(2px); /* Chrome, Opera */
+      -moz-filter: blur(2px);
+      -ms-filter: blur(2px);    
+          filter: blur(2px);
+      background-size: 100% 100%;
+    }
     margin: 0 auto;
     width: 100%;
     height: 100%;
     overflow: hidden;
     min-height: 585px;
-    background: url(../assets/images/Fields-Fresh-Quality-Popular-Wallpaper.jpg) no-repeat;
-    background-size: 100% 100%;
-    position: relative;
-    .el-col {
+    position: relative; 
+    header {
       text-align: center;
+      font: 40px/150% 'Microsoft YaHei','Hiragino Sans GB',Arial,sans-serif;
+      color: #45484d;
+      width: 400px;
+      height: 60px;
+    }
+    .wrap {
+      width: 400px;
+      height: 300px;
+      background: rgba(197, 196, 231, 0.81);
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-shadow: 1px 1px 1px 1px gainsboro;
       position: absolute;
       top: 50%;
-      transform: translateY(-50%)
-    }
-    .container {
-      width: 100%;
-      height: 400px;
-      background: #fff;
-      box-shadow: -1px 1px 10px rgba(0, 0, 0, 0.5);
-      border-radius: 5px;
-      header {
-        font-family: 'Open Sans', sans-serif;
-        font-weight: 900;
-        font-size: 2.3em;
-        color: #36383c;
-        padding: 10px 0 30px 0;
-      }
-      .el-form-item__content {
-        margin-left: 10px !important;
-      }
-      .el-form-item__error {
-        left: 24%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      .form-login { 
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
       }
     }
-    
   }
-  
 </style>
